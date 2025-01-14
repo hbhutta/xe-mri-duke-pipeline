@@ -1,0 +1,10 @@
+absl-py==1.2.0
+contextlib2==21.6.0
+ml_collections==0.1.1
+numpy==1.26.4
+PyYAML==6.0.2
+six==1.17.0
+nibabel==5.1.0
+scipy==1.14.1 
+#scipy==1.9.1
+#scikit_image==0.19.3
