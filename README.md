@@ -36,4 +36,10 @@ If pip complains of insufficient disk space when installing packages, try:
 - lobe split pi 8:
   - bias field works (image_cor.nii made), but problem in gas_binning
   - (128, 128, 128) size could result from resizing for CNN (segmentation.py)
-  - 
+- [jan 13, 2025] Getting Inputs do not occupy the same physical space! when running bias field correction, and then getting error in gas binning
+  - Will see if using SimpleITK functions to set origin helps
+  - Actually we are using the gas high reso as the image and the ct lobe mask part as the mask
+  - Github (https://github.com/ANTsX/ANTs/wiki/Inputs-do-not-occupy-the-same-physical-space) says that perhaps calling antsApplyTransforms could resolve the issue
+
+# references:
+- https://stackoverflow.com/questions/71268147/is-there-a-way-to-test-the-results-of-an-os-system-command-in-python

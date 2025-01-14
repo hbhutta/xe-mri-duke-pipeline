@@ -3,6 +3,7 @@
 Currently supports N4ITK bias field correction.
 """
 import os
+import subprocess
 import logging
 from typing import Tuple
 
@@ -112,20 +113,32 @@ def correct_biasfield_n4itk(
     nii_mask = nib.Nifti1Image(mask.astype(float), np.eye(4))
     nib.save(nii_imge, pathInput)
     nib.save(nii_mask, pathMask)
-    cmd = (
-        pathN4
-        + " -d 3 -i "
-        + pathInput
-        + " -s 2 -x "
-        + pathMask
-        + " -o ["
-        + pathOutput
-        + ", "
-        + pathBiasField
-        + "]"
-    )
 
-    os.system(cmd)
+    # https://github.com/ANTsX/ANTs/wiki/Inputs-do-not-occupy-the-same-physical-space
+    # resample ct_mask into the voxel space of gas_highreso
+    # consider using registration binary instead 
+    # since applying forward transforms assumes that registration already occurred
+    antsApplyTransformsPath = os.path.join(bin_path, "antsApplyTransforms") 
+    cmd_ants_apply_transforms = f"{antsApplyTransformsPath} -v -d 3 -i {pathMask} -r {pathInput} -o {pathMask} -n Linear"
+    os.system(cmd_ants_apply_transforms)
+    
+    cmd_correct_biasfield = f"{pathN4} -v -d 3 -i {pathInput} -x {pathMask} -o [{pathOutput}, {pathBiasField}]"
+#    cmd = f"{pathN4} -v -d 3 -i {pathInput} -s 2 -x {pathMask} -o [{pathOutput}, {pathBiasField}]"
+    
+    #cmd = (
+    #    pathN4
+    #    + " -d 3 -i "
+    #    + pathInput
+    #    + " -s 2 -x "
+    #    + pathMask
+    #    + " -o ["
+    #    + pathOutput
+    #    + ", "
+    #    + pathBiasField
+    #    + "]"
+    #)
+    os.system(cmd_correct_biasfield)
+    # These two lines assume the corrected image and biasfield were made
     image_cor = np.array(nib.load(pathOutput).get_fdata())
     image_biasfield = np.array(nib.load(pathBiasField).get_fdata())
 

@@ -369,8 +369,8 @@ class Subject(object):
             orientation=orientation,
         )
        
-        # This should give us dissolved 
-        io_utils.export_nii(np.abs(self.image_dissolved), "tmp/image_dissolved.nii")
+        # This should give us image_dissolved.nii (Haad !!!)
+        # io_utils.export_nii(np.abs(self.image_dissolved), "tmp/image_dissolved.nii")
 
     def segmentation(self):
         """Segment the thoracic cavity."""
@@ -456,7 +456,7 @@ class Subject(object):
 
     def gas_binning(self):
         """Bin gas images to colormap bins."""
-        print("HAAD: Problem with image[mask]\nimage is indexed array and mask is boolean index")
+        print("image is indexed array and mask is boolean index")
         print(f"image (indexed array shape) {np.shape(self.image_gas_cor)}")
         print(f"mask (boolean index shape) {np.shape(self.mask)}")
         self.image_gas_binned = binning.linear_bin(
@@ -566,6 +566,9 @@ class Subject(object):
         logging.info("Processed image_membrane2gas_binned")
 
 
+    """
+    Apply forward transforms to all images (rbc, mem, gas and proton and binned images) before this step
+    """
     def get_statistics(self) -> Dict[str, Any]:
         """Calculate image statistics.
 

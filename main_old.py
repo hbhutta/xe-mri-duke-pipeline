@@ -48,36 +48,48 @@ def gx_mapping_reconstruction(config: base_config.Config):
             raise ValueError("Cannot read in raw data files.")
     subject.calculate_rbc_m_ratio()
     logging.info("Reconstructing images")
-    subject.preprocess()
-    subject.reconstruction_gas()
-    subject.reconstruction_dissolved() # we should have image_dissolved here
-   
-    if config.recon.recon_proton:
-        subject.reconstruction_ute()
-        
-    # mri to ct reg here 
     
+    # Preprocess only necessary if calling reconstruct funcs$
+    rel_dir = f"data_dirs/{config.subject_id}_relevant_files/"
+#    items = [
+#        rel_dir + "gas_highreso.nii",
+#        rel_dir + "rbc2gas.nii",
+#        rel_dir + "membrane2gas.nii"
+#    ]
+    
+    if (not os.path.isdir(rel_dir)):
+        print(f"Recon files do not exist, starting recon...")
+        subject.preprocess()
+        subject.reconstruction_gas()
+        subject.reconstruction_dissolved() 
+
+        if config.recon.recon_proton:
+            subject.reconstruction_ute()
+    else:
+        print(f"Reconstructed files already exist, skipping recon...")    
+    # At this point ensure that all files in the temp list are in tmp/
+    print(glob.glob(os.path.join("tmp/", "*.nii")))
+        
+    subject.segmentation() 
+
     '''
-    Display all nifti files in tmp/ at this point. We should have an MRI mask 
-    (produced from image_proton.nii)
+    After running segmentation, we should have the mask_reg,
+    assuming the pipeline was run with CNN_VENT enabled
     '''
     print(glob.glob(os.path.join("tmp/", "*.nii")))
-    
-    assert 0 == 1
-    
-    subject.segmentation() # mask reg edited used during segmentation
-    # if not mask reg edited use AI (CNN vent)
 
 
     # this should be looped 8 times (for each ct mask, lobe core peel)
     # ai should produce mask reg (last point for initial run)
     subject.registration()
-    subject.biasfield_correction()
-    subject.gas_binning()
+    subject.biasfield_correction() # !!!!! Missing image_cor (bias field correction didn't generate output)
+    subject.gas_binning() # !!!!! IndexError
     subject.dixon_decomposition() # image_dissolved and gas_highsnr used here
     subject.hb_correction()
     subject.dissolved_analysis()
     subject.dissolved_binning()
+    
+    # apply ft to anything called by statistics (used in report)
     subject.get_statistics()
     subject.get_info()
     subject.save_subject_to_mat()
@@ -132,7 +144,11 @@ def main(argv):
         print(f"force_recon: {FLAGS.force_recon}")
         print(
             f"config.processes.gx_mapping_recon: {config.processes.gx_mapping_recon}\n\n\n")
-        gx_mapping_reconstruction(config)
+        proceed = input("Proceed [Y/N]? ")
+        if (proceed == "Y"):
+            gx_mapping_reconstruction(config)
+        else:
+            pass
 
     elif FLAGS.force_readin or config.processes.gx_mapping_readin:
         print(f"force_readin: {FLAGS.force_readin}")

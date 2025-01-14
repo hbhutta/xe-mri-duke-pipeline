@@ -36,6 +36,8 @@ class Config(config_dict.ConfigDict):
         self.data_dir = "data_dirs/PIm0075/"
         # "/home/smostafavi/XeGas/xenon-gas-exchange-consortium-main/data/scanfolder/mask_reg_edited.nii"
         # change 8 times for each mask type
+        
+        # manual_seg_filepath is ignored if we don't have
         self.manual_seg_filepath = "data_dirs/PIm0075/CT_lobe_mask_split_PI_8.nii"
         self.manual_reg_filepath = ""
         self.processes = Process()

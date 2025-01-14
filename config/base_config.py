@@ -90,7 +90,7 @@ class Recon(object):
         self.n_skip_start = config_utils.get_n_skip_start(self.scan_type)
         self.n_skip_end = 0
         self.recon_size = 64
-        self.matrix_size = 128
+        self.matrix_size = 128 # ???
         self.recon_proton = True
         self.remove_contamination = False
         self.remove_noisy_projections = True
