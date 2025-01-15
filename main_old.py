@@ -81,6 +81,8 @@ def gx_mapping_reconstruction(config: base_config.Config):
 
     # this should be looped 8 times (for each ct mask, lobe core peel)
     # ai should produce mask reg (last point for initial run)
+    
+    # We need to register mask 2 gas to ensure matching sizes for biasfield correction
     subject.registration()
     subject.biasfield_correction() # !!!!! Missing image_cor (bias field correction didn't generate output)
     subject.gas_binning() # !!!!! IndexError

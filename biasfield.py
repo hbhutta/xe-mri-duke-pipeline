@@ -123,21 +123,8 @@ def correct_biasfield_n4itk(
     os.system(cmd_ants_apply_transforms)
     
     cmd_correct_biasfield = f"{pathN4} -v -d 3 -i {pathInput} -x {pathMask} -o [{pathOutput}, {pathBiasField}]"
-#    cmd = f"{pathN4} -v -d 3 -i {pathInput} -s 2 -x {pathMask} -o [{pathOutput}, {pathBiasField}]"
-    
-    #cmd = (
-    #    pathN4
-    #    + " -d 3 -i "
-    #    + pathInput
-    #    + " -s 2 -x "
-    #    + pathMask
-    #    + " -o ["
-    #    + pathOutput
-    #    + ", "
-    #    + pathBiasField
-    #    + "]"
-    #)
     os.system(cmd_correct_biasfield)
+    
     # These two lines assume the corrected image and biasfield were made
     image_cor = np.array(nib.load(pathOutput).get_fdata())
     image_biasfield = np.array(nib.load(pathBiasField).get_fdata())
