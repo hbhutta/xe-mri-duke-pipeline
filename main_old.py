@@ -49,24 +49,13 @@ def gx_mapping_reconstruction(config: base_config.Config):
     subject.calculate_rbc_m_ratio()
     logging.info("Reconstructing images")
     
-    # Preprocess only necessary if calling reconstruct funcs$
-    rel_dir = f"data_dirs/{config.subject_id}_relevant_files/"
-#    items = [
-#        rel_dir + "gas_highreso.nii",
-#        rel_dir + "rbc2gas.nii",
-#        rel_dir + "membrane2gas.nii"
-#    ]
-    
-    if (not os.path.isdir(rel_dir)):
-        print(f"Recon files do not exist, starting recon...")
-        subject.preprocess()
-        subject.reconstruction_gas()
-        subject.reconstruction_dissolved() 
+    subject.preprocess()
+    subject.reconstruction_gas()
+    subject.reconstruction_dissolved() 
 
-        if config.recon.recon_proton:
-            subject.reconstruction_ute()
-    else:
-        print(f"Reconstructed files already exist, skipping recon...")    
+    if config.recon.recon_proton:
+        subject.reconstruction_ute()
+    
     # At this point ensure that all files in the temp list are in tmp/
     print(glob.glob(os.path.join("tmp/", "*.nii")))
         
