@@ -38,7 +38,7 @@ class Config(config_dict.ConfigDict):
         # change 8 times for each mask type
         
         # manual_seg_filepath is ignored if we don't have
-        self.manual_seg_filepath = "data_dirs/PIm0075/CT_lobe_mask_split_PI_8.nii"
+        self.manual_seg_filepath = "data_dirs/PIm0075/mask_reg_edited.nii"
         self.manual_reg_filepath = ""
         self.processes = Process()
         self.recon = Recon()
@@ -47,8 +47,8 @@ class Config(config_dict.ConfigDict):
         
         # Use manual for all masks (lobes, core/peel, mask_reg_edited)
         self.segmentation_key = constants.SegmentationKey.MANUAL_VENT.value
-        # for manual: constants.SegmentationKey.MANUAL_VENT.value
-        # for automatic: constants.SegmentationKey.CNN_VENT.value
+        # for manual: constants.SegmentationKey.MANUAL_VENT.value (second run)
+        # for automatic: constants.SegmentationKey.CNN_VENT.value (first run)
         self.registration_key = constants.RegistrationKey.SKIP.value
         self.bias_key = constants.BiasfieldKey.N4ITK.value
         # constants.HbCorrectionKey.NONE.value
