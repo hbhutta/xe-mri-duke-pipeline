@@ -562,6 +562,9 @@ def export_subject_csv(dict_stats: Dict[str, Any], path: str, overwrite=False):
         with open(path, "w", newline="") as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=header)
             writer.writeheader()
+            
+            # We want to write a row to the csv file eight times
+            # one for each mask (1 core, 1 peel, 5 lobes)
             writer.writerow(dict_stats)
     else:
         with open(path, "a", newline="") as csvfile:

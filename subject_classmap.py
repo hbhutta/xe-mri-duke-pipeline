@@ -912,7 +912,7 @@ class Subject(object):
         io_utils.export_subject_csv(
             {**self.dict_info, **self.dict_stats},
             path="tmp/{}_stats.csv".format(self.config.subject_id),
-            overwrite=True,
+            overwrite=False,
         )
 
     def save_subject_to_mat(self):
