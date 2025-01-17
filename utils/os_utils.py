@@ -22,7 +22,7 @@ Given a directory, list the files common to all the first-level subdirectories
 """
 
 
-def get_common_files(base_dir: str, filename: str | None) -> list[str]:
+def get_common_files(base_dir: str, filename: str):
     file_sets_by_subdir = {}
     sample_subdir = None
     for subdir in os.listdir(base_dir):
@@ -36,7 +36,7 @@ def get_common_files(base_dir: str, filename: str | None) -> list[str]:
         common_files &= file_sets_by_subdir[key]
 
     common_files = list(common_files)
-    all_file_paths = glob.glob('**/*', root_dir=base_dir)
+    all_file_paths = glob.glob('**/*')
     common_file_paths = [file_path for file_path in all_file_paths if any(
         common_file in file_path for common_file in common_files)]
     
@@ -183,8 +183,8 @@ def aff2axcodes_RAS(aff):
 #"""
 #
 #
-#def get_subdirs(dir: str) -> list[str]:
-#    return [os.path.join(dir, subdir) for subdir in os.listdir(dir)]
+def get_subdirs(dir_: str):
+    return [os.path.join(dir_, subdir) for subdir in os.listdir(dir_)]
 # 
 # 
 # def get_affine(nii_filepath: str) -> list:

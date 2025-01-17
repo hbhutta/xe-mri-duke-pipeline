@@ -905,14 +905,14 @@ class Subject(object):
         """Write statistics to file."""
         # write to combined csv of recently processed subjects
         io_utils.export_subject_csv(
-            {**self.dict_info, **self.dict_stats}, path="data/stats_all.csv"
+             {**self.dict_stats}, path="data/stats_all.csv"  # {**self.dict_info, **self.dict_stats}, path="data/stats_all.csv"
         )
 
         # write to individual subject csv
         io_utils.export_subject_csv(
-            {**self.dict_info, **self.dict_stats},
-            path="tmp/{}_stats.csv".format(self.config.subject_id),
-            overwrite=True,
+            {**self.dict_stats}, # {**self.dict_info, **self.dict_stats},
+            path=f"tmp/{self.config.subject_id}_stats.csv", # path="tmp/{}_stats.csv".format(self.config.subject_id),
+            overwrite=False, # True
         )
 
     def save_subject_to_mat(self):
@@ -929,65 +929,85 @@ class Subject(object):
         )
         io_utils.export_nii(
             self.image_rbc2gas_binned,
-            "tmp/rbc_binned.nii",
+            f"{self.config.data_dir}/image_rbc2gas_binned.nii",
             self.dict_dis[constants.IOFields.FOV],
         )
         io_utils.export_nii(
             np.abs(self.image_gas_highreso),
-            "tmp/gas_highreso.nii",
+            f"{self.config.data_dir}/image_gas_highreso.nii",
             self.dict_dis[constants.IOFields.FOV],
         )
         io_utils.export_nii(
             np.abs(self.image_gas_highsnr),
-            "tmp/gas_highsnr.nii",
+            f"{self.config.data_dir}/image_gas_highsnr.nii",
             self.dict_dis[constants.IOFields.FOV],
         )
         io_utils.export_nii(
             np.abs(self.image_rbc),
-            "tmp/rbc.nii",
+            f"{self.config.data_dir}/image_rbc.nii",
             self.dict_dis[constants.IOFields.FOV],
         )
         io_utils.export_nii(
             np.abs(self.image_membrane),
-            "tmp/membrane.nii",
+            f"{self.config.data_dir}/image_membrane.nii",
             self.dict_dis[constants.IOFields.FOV],
         )
         io_utils.export_nii(
             np.abs(self.image_membrane2gas),
-            "tmp/membrane2gas.nii",
+            f"{self.config.data_dir}/image_membrane2gas.nii",
             self.dict_dis[constants.IOFields.FOV],
         )
         io_utils.export_nii( # Haad: This was not here originally
             np.abs(self.image_rbc2gas),
-            "tmp/rbc2gas.nii",
+            f"{self.config.data_dir}/image_rbc2gas.nii",
             self.dict_dis[constants.IOFields.FOV],
         )
+        
+        io_utils.export_nii( # Haad: This was not here originally
+            np.abs(self.image_gas_cor),
+            f"{self.config.data_dir}/image_gas_cor.nii",
+            self.dict_dis[constants.IOFields.FOV],
+        )
+
+        
+        io_utils.export_nii( # Haad: This was not here originally
+            np.abs(self.image_membrane2gas_binned),
+            f"{self.config.data_dir}/image_membrane2gas_binned.nii",
+            self.dict_dis[constants.IOFields.FOV],
+        )
+        
+        io_utils.export_nii( # Haad: This was not here originally
+            np.abs(self.image_gas_binned),
+            f"{self.config.data_dir}/image_gas_binned.nii",
+            self.dict_dis[constants.IOFields.FOV],
+        )
+
         io_utils.export_nii(
             self.mask.astype(float),
-            "tmp/mask_reg.nii",
+            f"{self.config.data_dir}/mask_reg.nii",
             self.dict_dis[constants.IOFields.FOV],
         )
         io_utils.export_nii(
             np.abs(self.image_dissolved),
-            "tmp/dissolved.nii",
+            f"{self.config.data_dir}/image_dissolved.nii",
             self.dict_dis[constants.IOFields.FOV],
         )
         if self.config.recon.recon_proton:
             io_utils.export_nii(
                 np.abs(self.image_proton),
-                "tmp/proton.nii",
+                f"{self.config.data_dir}/image_proton.nii",
                 self.dict_dis[constants.IOFields.FOV],
             )
             io_utils.export_nii(
                 np.abs(self.image_proton_reg),
-                "tmp/proton_reg.nii",
+                f"{self.config.data_dir}/image_proton_reg.nii",
                 self.dict_dis[constants.IOFields.FOV],
             ),
         io_utils.export_nii_4d(
             plot.map_and_overlay_to_rgb(
                 self.image_rbc2gas_binned, proton_reg, constants.CMAP.RBC_BIN2COLOR
             ),
-            "tmp/rbc2gas_rgb.nii",
+            f"{self.config.data_dir}/image_rbc2gas_binned_rgb.nii",
         )
         io_utils.export_nii_4d(
             plot.map_and_overlay_to_rgb(
@@ -995,7 +1015,7 @@ class Subject(object):
                 proton_reg,
                 constants.CMAP.MEMBRANE_BIN2COLOR,
             ),
-            "tmp/membrane2gas_rgb.nii",
+            f"{self.config.data_dir}/image_membrane2gas_binned_rgb.nii",
         )
         io_utils.export_nii_4d(
             plot.map_and_overlay_to_rgb(
@@ -1003,7 +1023,7 @@ class Subject(object):
                 proton_reg,
                 constants.CMAP.VENT_BIN2COLOR,
             ),
-            "tmp/gas_rgb.nii",
+            f"{self.config.data_dir}/image_gas_binned_rgb.nii",
         )
 
     def save_config_as_json(self):
@@ -1015,18 +1035,17 @@ class Subject(object):
 
     def move_output_files(self):
         """Move output files into dedicated directory."""
-        # define files to move
         output_files = (
-            "tmp/{}_config_gx_imaging.json".format(self.config.subject_id),
-            "tmp/{}.mat".format(self.config.subject_id),
-            "tmp/{}_report.pdf".format(self.config.subject_id),
-            "tmp/{}_stats.csv".format(self.config.subject_id),
-            "tmp/gas_highreso.nii",
-            "tmp/gas_rgb.nii",
-            "tmp/mask_reg.nii",
+            "tmp/membrane2gas.nii",
+            "tmp/membrane2gas_binned.nii",
             "tmp/membrane2gas_rgb.nii",
-            "tmp/proton_reg.nii",
+            
+            "tmp/rbc2gas.nii",
+            "tmp/rbc2gas_binned.nii",
             "tmp/rbc2gas_rgb.nii",
+
+            "tmp/gas_binned.nii",
+            "tmp/gas_highreso.nii",
         )
         io_utils.move_or_copy_files(output_files, os.path.join(self.config.data_dir, "output"), move=True)
        

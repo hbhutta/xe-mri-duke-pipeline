@@ -1,0 +1,257 @@
+['cohort/PIm0015/CT_mask.nii', 'cohort/PIm0018/CT_mask.nii', 'cohort/PIm0019/CT_mask.nii', 'cohort/PIm0020/CT_mask.nii', 'cohort/PIm0023/CT_mask.nii', 'cohort/PIm0025/CT_mask.nii', 'cohort/PIm0028/CT_mask.nii', 'cohort/PIm0029/CT_mask.nii', 'cohort/PIm0031/CT_mask.nii', 'cohort/PIm0032/CT_mask.nii', 'cohort/PIm0037/CT_mask.nii', 'cohort/PIm0038/CT_mask.nii', 'cohort/PIm0049/CT_mask.nii', 'cohort/PIm0051/CT_mask.nii', 'cohort/PIm0053/CT_mask.nii', 'cohort/PIm0054/CT_mask.nii', 'cohort/PIm0055/CT_mask.nii', 'cohort/PIm0064/CT_mask.nii', 'cohort/PIm0065/CT_mask.nii', 'cohort/PIm0067/CT_mask.nii', 'cohort/PIm0069/CT_mask.nii', 'cohort/PIm0070/CT_mask.nii', 'cohort/PIm0071/CT_mask.nii', 'cohort/PIm0072/CT_mask.nii', 'cohort/PIm0073/CT_mask.nii', 'cohort/PIm0075/CT_mask.nii', 'cohort/PIm0076/CT_mask.nii', 'cohort/PIm0078/CT_mask.nii', 'cohort/PIm0080/CT_mask.nii', 'cohort/PIm0081/CT_mask.nii', 'cohort/PIm0083/CT_mask.nii', 'cohort/PIm0086/CT_mask.nii']
+['cohort/PIm0015/mask_reg_edited.nii', 'cohort/PIm0018/mask_reg_edited.nii', 'cohort/PIm0019/mask_reg_edited.nii', 'cohort/PIm0020/mask_reg_edited.nii', 'cohort/PIm0023/mask_reg_edited.nii', 'cohort/PIm0025/mask_reg_edited.nii', 'cohort/PIm0028/mask_reg_edited.nii', 'cohort/PIm0029/mask_reg_edited.nii', 'cohort/PIm0031/mask_reg_edited.nii', 'cohort/PIm0032/mask_reg_edited.nii', 'cohort/PIm0037/mask_reg_edited.nii', 'cohort/PIm0038/mask_reg_edited.nii', 'cohort/PIm0049/mask_reg_edited.nii', 'cohort/PIm0051/mask_reg_edited.nii', 'cohort/PIm0053/mask_reg_edited.nii', 'cohort/PIm0054/mask_reg_edited.nii', 'cohort/PIm0055/mask_reg_edited.nii', 'cohort/PIm0064/mask_reg_edited.nii', 'cohort/PIm0065/mask_reg_edited.nii', 'cohort/PIm0067/mask_reg_edited.nii', 'cohort/PIm0069/mask_reg_edited.nii', 'cohort/PIm0070/mask_reg_edited.nii', 'cohort/PIm0071/mask_reg_edited.nii', 'cohort/PIm0072/mask_reg_edited.nii', 'cohort/PIm0073/mask_reg_edited.nii', 'cohort/PIm0075/mask_reg_edited.nii', 'cohort/PIm0076/mask_reg_edited.nii', 'cohort/PIm0078/mask_reg_edited.nii', 'cohort/PIm0080/mask_reg_edited.nii', 'cohort/PIm0081/mask_reg_edited.nii', 'cohort/PIm0083/mask_reg_edited.nii', 'cohort/PIm0086/mask_reg_edited.nii']
+reorient.py: Reorienting patient PIm0015 CT mask
+cohort/PIm0015/CT_mask.nii
+Saved to cohort/PIm0015/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0018 CT mask
+cohort/PIm0018/CT_mask.nii
+Saved to cohort/PIm0018/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0019 CT mask
+cohort/PIm0019/CT_mask.nii
+Saved to cohort/PIm0019/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0020 CT mask
+cohort/PIm0020/CT_mask.nii
+Saved to cohort/PIm0020/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0023 CT mask
+cohort/PIm0023/CT_mask.nii
+Saved to cohort/PIm0023/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0025 CT mask
+cohort/PIm0025/CT_mask.nii
+Saved to cohort/PIm0025/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0028 CT mask
+cohort/PIm0028/CT_mask.nii
+File cohort/PIm0028/CT_mask_neg_affine.nii already exists.
+reorient.py: Reorienting patient PIm0029 CT mask
+cohort/PIm0029/CT_mask.nii
+Saved to cohort/PIm0029/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0031 CT mask
+cohort/PIm0031/CT_mask.nii
+File cohort/PIm0031/CT_mask_neg_affine.nii already exists.
+reorient.py: Reorienting patient PIm0032 CT mask
+cohort/PIm0032/CT_mask.nii
+Saved to cohort/PIm0032/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0037 CT mask
+cohort/PIm0037/CT_mask.nii
+Saved to cohort/PIm0037/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0038 CT mask
+cohort/PIm0038/CT_mask.nii
+Saved to cohort/PIm0038/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0049 CT mask
+cohort/PIm0049/CT_mask.nii
+Saved to cohort/PIm0049/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0051 CT mask
+cohort/PIm0051/CT_mask.nii
+Saved to cohort/PIm0051/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0053 CT mask
+cohort/PIm0053/CT_mask.nii
+Saved to cohort/PIm0053/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0054 CT mask
+cohort/PIm0054/CT_mask.nii
+Saved to cohort/PIm0054/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0055 CT mask
+cohort/PIm0055/CT_mask.nii
+Saved to cohort/PIm0055/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0064 CT mask
+cohort/PIm0064/CT_mask.nii
+Saved to cohort/PIm0064/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0065 CT mask
+cohort/PIm0065/CT_mask.nii
+Saved to cohort/PIm0065/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0067 CT mask
+cohort/PIm0067/CT_mask.nii
+Saved to cohort/PIm0067/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0069 CT mask
+cohort/PIm0069/CT_mask.nii
+Saved to cohort/PIm0069/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0070 CT mask
+cohort/PIm0070/CT_mask.nii
+Saved to cohort/PIm0070/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0071 CT mask
+cohort/PIm0071/CT_mask.nii
+Saved to cohort/PIm0071/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0072 CT mask
+cohort/PIm0072/CT_mask.nii
+Saved to cohort/PIm0072/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0073 CT mask
+cohort/PIm0073/CT_mask.nii
+Saved to cohort/PIm0073/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0075 CT mask
+cohort/PIm0075/CT_mask.nii
+Saved to cohort/PIm0075/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0076 CT mask
+cohort/PIm0076/CT_mask.nii
+Saved to cohort/PIm0076/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0078 CT mask
+cohort/PIm0078/CT_mask.nii
+Saved to cohort/PIm0078/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0080 CT mask
+cohort/PIm0080/CT_mask.nii
+Saved to cohort/PIm0080/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0081 CT mask
+cohort/PIm0081/CT_mask.nii
+Saved to cohort/PIm0081/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0083 CT mask
+cohort/PIm0083/CT_mask.nii
+Saved to cohort/PIm0083/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+reorient.py: Reorienting patient PIm0086 CT mask
+cohort/PIm0086/CT_mask.nii
+Saved to cohort/PIm0086/CT_mask_neg_affine.nii!
+('R', 'A', 'S')
+done ct reorienting
+reorient.py: Reorienting patient PIm0015 ventilation and MRI
+cohort/PIm0015/mask_reg_edited.nii
+Saved to cohort/PIm0015/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0018 ventilation and MRI
+cohort/PIm0018/mask_reg_edited.nii
+Saved to cohort/PIm0018/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0019 ventilation and MRI
+cohort/PIm0019/mask_reg_edited.nii
+Saved to cohort/PIm0019/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0020 ventilation and MRI
+cohort/PIm0020/mask_reg_edited.nii
+Saved to cohort/PIm0020/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0023 ventilation and MRI
+cohort/PIm0023/mask_reg_edited.nii
+Saved to cohort/PIm0023/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0025 ventilation and MRI
+cohort/PIm0025/mask_reg_edited.nii
+Saved to cohort/PIm0025/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0028 ventilation and MRI
+cohort/PIm0028/mask_reg_edited.nii
+Saved to cohort/PIm0028/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0029 ventilation and MRI
+cohort/PIm0029/mask_reg_edited.nii
+Saved to cohort/PIm0029/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0031 ventilation and MRI
+cohort/PIm0031/mask_reg_edited.nii
+File cohort/PIm0031/mask_reg_edited_mutated_affine.nii already exists.
+reorient.py: Reorienting patient PIm0032 ventilation and MRI
+cohort/PIm0032/mask_reg_edited.nii
+Saved to cohort/PIm0032/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0037 ventilation and MRI
+cohort/PIm0037/mask_reg_edited.nii
+Saved to cohort/PIm0037/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0038 ventilation and MRI
+cohort/PIm0038/mask_reg_edited.nii
+Saved to cohort/PIm0038/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0049 ventilation and MRI
+cohort/PIm0049/mask_reg_edited.nii
+Saved to cohort/PIm0049/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0051 ventilation and MRI
+cohort/PIm0051/mask_reg_edited.nii
+Saved to cohort/PIm0051/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0053 ventilation and MRI
+cohort/PIm0053/mask_reg_edited.nii
+Saved to cohort/PIm0053/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0054 ventilation and MRI
+cohort/PIm0054/mask_reg_edited.nii
+Saved to cohort/PIm0054/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0055 ventilation and MRI
+cohort/PIm0055/mask_reg_edited.nii
+Saved to cohort/PIm0055/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0064 ventilation and MRI
+cohort/PIm0064/mask_reg_edited.nii
+Saved to cohort/PIm0064/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0065 ventilation and MRI
+cohort/PIm0065/mask_reg_edited.nii
+Saved to cohort/PIm0065/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0067 ventilation and MRI
+cohort/PIm0067/mask_reg_edited.nii
+Saved to cohort/PIm0067/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0069 ventilation and MRI
+cohort/PIm0069/mask_reg_edited.nii
+Saved to cohort/PIm0069/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0070 ventilation and MRI
+cohort/PIm0070/mask_reg_edited.nii
+Saved to cohort/PIm0070/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0071 ventilation and MRI
+cohort/PIm0071/mask_reg_edited.nii
+Saved to cohort/PIm0071/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0072 ventilation and MRI
+cohort/PIm0072/mask_reg_edited.nii
+Saved to cohort/PIm0072/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0073 ventilation and MRI
+cohort/PIm0073/mask_reg_edited.nii
+Saved to cohort/PIm0073/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0075 ventilation and MRI
+cohort/PIm0075/mask_reg_edited.nii
+Saved to cohort/PIm0075/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0076 ventilation and MRI
+cohort/PIm0076/mask_reg_edited.nii
+Saved to cohort/PIm0076/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0078 ventilation and MRI
+cohort/PIm0078/mask_reg_edited.nii
+Saved to cohort/PIm0078/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0080 ventilation and MRI
+cohort/PIm0080/mask_reg_edited.nii
+Saved to cohort/PIm0080/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0081 ventilation and MRI
+cohort/PIm0081/mask_reg_edited.nii
+Saved to cohort/PIm0081/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0083 ventilation and MRI
+cohort/PIm0083/mask_reg_edited.nii
+Saved to cohort/PIm0083/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+reorient.py: Reorienting patient PIm0086 ventilation and MRI
+cohort/PIm0086/mask_reg_edited.nii
+Saved to cohort/PIm0086/mask_reg_edited_mutated_affine.nii!
+('S', 'R', 'A')
+That took: 5.007711887359619 min/sec

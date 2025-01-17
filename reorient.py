@@ -1,4 +1,4 @@
-from utils.os_utils import aff2axcodes_RAS 
+from utils.os_utils import get_common_files, get_subdirs, aff2axcodes_RAS
 import os
 import nibabel as nib
 from time import time
@@ -7,32 +7,29 @@ import numpy as np
 
 prep_start_time = time()
 
-BASE_DIR = argv[1]
+BASE_DIR = "cohort"
 
-# Assuming each patient has these files
-#subdir_paths = get_subdirs(dir=BASE_DIR)[0:1]
-#ct_mask_file_paths = get_common_files(
-#    base_dir=BASE_DIR, filename='CT_mask.nii')[0:1]
-#mri_file_paths = get_common_files(
-#    base_dir=BASE_DIR, filename='mask_reg_edited_scaled.nii')[0:1]
-#ventilation_file_paths = get_common_files(
-#    base_dir=BASE_DIR, filename='gas_highreso_scaled.nii')[0:1]
+patient_paths = get_subdirs(dir_=BASE_DIR) # ['cohort/PIm0015', 'cohort/PIm0018', 'cohort/PIm0019', 'cohort/PIm0020', 'cohort/PIm0023', 'cohort/PIm0025', 'cohort/PIm0028', 'cohort/PIm0029', 'cohort/PIm0031', 'cohort/PIm0032']
 
-ct_mask_file_paths = ["imgs/PIm0072/CT_mask.nii"]
-#ct_mask_file_paths = ["./CT_mask.nii"]
-mri_file_paths = ["imgs/PIm0072/mask_reg_edited_scaled.nii"]
-ventilation_file_paths = ["imgs/PIm0072/gas_highreso_scaled.nii"]
-subdir_paths = ["imgs/PIm0072"]
-#subdir_paths=["."]
+#print(patient_paths)
 
-# print(ct_mask_file_paths)
-# print(mri_file_paths)
-# print(ventilation_file_paths)
+ct_mask_file_paths = [os.path.join(patient, "CT_mask.nii") for patient in patient_paths]
+mri_file_paths = [os.path.join(patient, "mask_reg_edited.nii") for patient in patient_paths]
+#gas_file_paths = [os.path.join(patient, "gas_binned.nii") for patient in patient_paths]
+#mem_file_paths = [os.path.join(patient, "membranegas_binned.nii") for patient in patient_paths]
+#rbc_file_paths = [os.path.join(patient, "rbc2gas_binned.nii") for patient in patient_paths]
+
+assert len(ct_mask_file_paths) == len(patient_paths)
+assert len(mri_file_paths) == len(patient_paths)
+
+print(ct_mask_file_paths)
+print(mri_file_paths)
+
 
 """
 Reorient CT mask (CT_mask.nii) 
 """
-for ct_mask_file, subdir in zip(ct_mask_file_paths, subdir_paths):
+for ct_mask_file, subdir in zip(ct_mask_file_paths, patient_paths):
     print(f"reorient.py: Reorienting patient {os.path.basename(subdir)} CT mask")
     print(ct_mask_file)
 
@@ -58,26 +55,21 @@ print("done ct reorienting")
 """
 Reorient MRI (mask_reg_edited_scaled.nii) and Ventilation (gas_highreso_scaled.nii)
 """
-for mri_file, vent_file, subdir in zip(mri_file_paths, ventilation_file_paths, subdir_paths):
+for mri_file, subdir in zip(mri_file_paths, patient_paths):
     print(f"reorient.py: Reorienting patient {os.path.basename(subdir)} ventilation and MRI")
 
     print(mri_file)
-    print(vent_file)
 
     nib_mr = nib.load(mri_file)
-    nib_vent = nib.load(vent_file)
 
-    aff = nib_mr.affine
     new_aff = np.array([[0, -1, 0, 0],
                         [0, 0, -1, 0],
                         [-1, 0, 0, 0],
                         [0, 0, 0, 1]])
 
     nib_mr.set_qform(new_aff)
-    nib_vent.set_qform(new_aff)
 
     mr_path = mri_file[:-4] + '_mutated_affine.nii'
-    vent_path = vent_file[:-4] + '_mutated_affine.nii'
 
     # MRI
     if not os.path.exists(mr_path):
@@ -86,14 +78,6 @@ for mri_file, vent_file, subdir in zip(mri_file_paths, ventilation_file_paths, s
         print(aff2axcodes_RAS(nib_mr.affine))
     else:
         print(f"File {mr_path} already exists.")
-
-    # Ventilation
-    if not os.path.exists(vent_path):
-        nib.save(img=nib_vent, filename=vent_path)
-        print(f"Saved to {vent_path}!")
-        print(aff2axcodes_RAS(nib_vent.affine))
-    else:
-        print(f"File {vent_path} already exists.")
 
 prep_end_time = time()
 print(f"That took: {prep_end_time - prep_start_time} min/sec")

@@ -1,20 +1,11 @@
 """Scripts to run gas exchange mapping pipeline."""
 import logging
-import glob 
-import os
 
 from absl import app, flags
 from ml_collections import config_flags
 
 from config import base_config
 from subject_classmap import Subject
-
-from utils import constants
-
-from register import register
-from warp_vent import warp_image
-
-import pickle
 
 FLAGS = flags.FLAGS
 
@@ -28,9 +19,29 @@ flags.DEFINE_boolean(name="force_recon",
                      default=False,
                      help="force reconstruction for the subject")
 
-flags.DEFINE_bool(name="force_segmentation", 
-                  default=False, 
-                  help="run segmentation again.")
+#flags.DEFINE_bool(name="force_segmentation", 
+#                  default=False, 
+#                  help="run segmentation again.")
+#
+#flags.DEFINE_string(name="data_dir",
+#                    default=None, # assuming that this is where .dat files are stored by default
+#                    help="The folder where the .dat files are stored",
+#                    required=True)
+#
+#flags.DEFINE_float(name="rbc_m_ratio",
+#                    default=None, 
+#                    help="The RBC:M ratio, calculated through a separate Matlab script",
+#                    required=True)
+#
+#flags.DEFINE_string(name="subject_id",
+#                    default=None, 
+#                    help="The PIm registry ID of the subject to process",
+#                    required=True)
+#
+#flags.DEFINE_string(name="seg_path",
+#                    default=None, 
+#                    help="The path to the mask/label")
+
 
 def gx_mapping_reconstruction(config: base_config.Config):
     """Run the gas exchange mapping pipeline with reconstruction.
@@ -58,56 +69,18 @@ def gx_mapping_reconstruction(config: base_config.Config):
         subject.reconstruction_ute()
     
     subject.segmentation() 
-
+    
     subject.registration()
     subject.biasfield_correction() 
-    subject.gas_binning()  
+    subject.gas_binning() 
     subject.dixon_decomposition() 
     subject.hb_correction()
     subject.dissolved_analysis()
     subject.dissolved_binning()
-  
-    subject.get_statistics()
-#    subject.get_info()
-#    subject.save_subject_to_mat()
-    subject.write_stats_to_csv()
-#    subject.generate_figures()
-#    subject.generate_pdf()
+    
     subject.save_files()
-#    subject.save_config_as_json()
-    subject.move_output_files()
-#    subject.copy_relevant_files()
-#    subject.zip_relevant_files()
-    logging.info("Complete")
     
-    # Register CT mask to mask_reg_edited
-    out_path = f"{config.dat_dir}/output/"
-    
-    reg_path = os.path.join(out_path, f"{config.subject_id}_reg.pkl")
-    
-    ct_mask = f"{config.data_dir}/CT_lobe_mask.nii"
-    mask_reg = f"{config.data_dir}/mask_reg_edited.nii"
-
-    # load forward transforms into a variable for use in warp_image    
-    with open(reg_path, "rb") as file:
-        mytx = pickle.load(file)
-
-    # Threading here?
-    gas_imgs = [
-        os.path.join(out_path, "membrane2gas.nii"),
-        os.path.join(out_path, "membrane2gas_binned.nii"),
-        os.path.join(out_path, "membrane2gas_rgb.nii"),
-        os.path.join(out_path, "rbc2gas.nii"),
-        os.path.join(out_path, "rbc2gas_binned.nii"),
-        os.path.join(out_path, "rbc2gas_rgb.nii"),
-        os.path.join(out_path, "gas_binned.nii"),
-        os.path.join(out_path, "gas_highreso.nii"),
-    ]
-  
-    for gas_img in gas_imgs:  
-        warp_image(fixed=ct_mask, moving=gas_img,
-                            transform_list=mytx['fwdtransforms'])
-        
+    logging.info("Complete") 
     
 
 
@@ -130,11 +103,11 @@ def gx_mapping_readin(config: base_config.Config):
     subject.get_info()
     subject.save_subject_to_mat()
     subject.write_stats_to_csv()
-    subject.generate_figures()
-    subject.generate_pdf()
+    # subject.generate_figures()
+    # subject.generate_pdf()
     subject.save_files()
-    subject.save_config_as_json()
-    subject.move_output_files()
+    # subject.save_config_as_json()
+    # subject.move_output_files()
     logging.info("Complete")
 
 
@@ -151,11 +124,6 @@ def main(argv):
         print(f"force_recon: {FLAGS.force_recon}")
         print(
             f"config.processes.gx_mapping_recon: {config.processes.gx_mapping_recon}\n\n\n")
-        proceed = input("Proceed [Y/N]? ")
-        if (proceed == "Y"):
-            gx_mapping_reconstruction(config)
-        else:
-            pass
 
     elif FLAGS.force_readin or config.processes.gx_mapping_readin:
         print(f"force_readin: {FLAGS.force_readin}")
@@ -172,6 +140,9 @@ if __name__ == "__main__":
 
 
 """
+Clean up data dir with:
+rm -rf cohort/PIm123/image_*
+
 If doing automatic segmentation, the manual seg file path does not need to be specified. Run the pipeline with:
 ```bash
 python main.py \
