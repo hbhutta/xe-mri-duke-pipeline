@@ -1,7 +1,5 @@
 """Scripts to run gas exchange mapping pipeline."""
 import logging
-import glob 
-import ants
 
 from absl import app, flags
 from ml_collections import config_flags
@@ -9,9 +7,7 @@ from ml_collections import config_flags
 from config import base_config
 from subject_classmap import Subject
 
-from warp_vent import warp_image
-
-import pickle
+import os
 
 FLAGS = flags.FLAGS
 
@@ -78,8 +74,20 @@ def compute_patient_stats(config: base_config.Config):
  
     subject = Subject(config=config)
     
-    
-   
+    # These must all be resized before 
+    subject.mask = os.path.join(subject.config.data_dir, "mask_reg_edited.nii")
+    subject.image_gas_highreso = os.path.join(subject.config.data_dir, "image_gas_highreso.nii")
+    subject.image_gas_binned = os.path.join(subject.config.data_dir, "image_gas_binned.nii")
+    subject.image_gas_cor = os.path.join(subject.config.data_dir, "image_gas_cor.nii")
+    subject.image_rbc2gas_binned = os.path.join(subject.config.data_dir, "image_rbc2gas_binned.nii")
+    subject.image_rbc2gas = os.path.join(subject.config.data_dir, "image_rbc2gas.nii")
+    subject.mask_vent = os.path.join(subject.config.data_dir, "mask_vent.nii")
+    subject.image_membrane = os.path.join(subject.config.data_dir, "image_membrane.nii")
+    subject.image_membrane2gas_binned = os.path.join(subject.config.data_dir, "image_membrane2gas_binned.nii")
+    subject.image_membrane2gas = os.path.join(subject.config.data_dir, "image_membrane2gas.nii")
+    subject.image_gas_binned = os.path.join(subject.config.data_dir, "image_gas_binned.nii")
+     
+      
     subject.get_statistics()
     subject.write_stats_to_csv()
         
@@ -93,11 +101,7 @@ def main(argv):
     config = _CONFIG.value
 
     # Set data dir from flag argument
-    proceed = input(f"Proceed to computing patient stats for patient {config.subject_id} [Y/N]? ")
-    if (proceed == "Y"):
-        compute_patient_stats(config)
-    else:
-        pass
+    compute_patient_stats(config)
 
 if __name__ == "__main__":
     app.run(main)

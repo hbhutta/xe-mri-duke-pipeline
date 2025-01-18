@@ -577,7 +577,7 @@ class Subject(object):
         """
         self.dict_stats = {
             constants.IOFields.SUBJECT_ID: self.config.subject_id,
-            constants.IOFields.SCAN_DATE: self.dict_dis[constants.IOFields.SCAN_DATE],
+             constants.IOFields.SCAN_DATE: self.dict_dis[constants.IOFields.SCAN_DATE],
             constants.IOFields.PROCESS_DATE: metrics.process_date(),
             constants.StatsIOFields.INFLATION: metrics.inflation_volume(
                 self.mask, self.dict_dis[constants.IOFields.FOV]

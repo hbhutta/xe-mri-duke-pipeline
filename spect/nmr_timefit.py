@@ -5,7 +5,7 @@ from typing import Optional
 sys.path.append("..")
 
 import matplotlib
-matplotlib.use("TKAgg")
+# matplotlib.use("TKAgg")
 import matplotlib.pyplot as plt
 
 import numpy as np
