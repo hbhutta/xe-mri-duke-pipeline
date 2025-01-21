@@ -1,9 +1,13 @@
+#!/bin/bash
 
-# Run reg once 
+python reconstruct.py --config config/tests/cohort_master_config.py --force_recon 
+python reorient.py
+python resize.py
+python register.py
+python unpack.py
+python warp_vent.py
+python stats.py --config config/tests/cohort_master_config.py
 
-# recon -> get stats -> delete tmp files -> repeat
-# we can manually set rbc_m_ratio, data_dir, etc.. using flags
-python reconstruct.py --config config/tests/PIm0015_master.py --force_recon 
-python warp.py --data_dir cohort/PIm0015
+
 
 

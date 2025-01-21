@@ -47,3 +47,27 @@ If pip complains of insufficient disk space when installing packages, try:
 
 save the output of a script to a text file with:
 `python foo.py 2>&1 | tee log.txt`
+
+"foo_mutated_affine_resized.nii"
+
+# Outline
+1. Reconstruct all images (images will likely have dimensions 128x128x128 and pixdims around 0.03, matching mask_reg, which is correct, if not correct them in resizing step)
+2. Reorient
+3. Resize all reoriented mri-type images
+4. Register reoriented CT and MRI
+  - CT_mask_neg_affine.nii, mask_reg_edited_mutated_affine_warped.nii
+5. Apply fwtransforms to reconstructed images (at this point they have been resized and reoriented)
+6. Check images
+7. Run stats.
+
+
+In the `mask_reg_edited.nii` for PIm0377: (0.03125) -> mm scale
+![alt text](image.png)
+![alt text](image-1.png)
+
+`mask_reg_edited.nii` for patients past PIm0288 (1.0) -> cm scale
+
+
+
+after resizing, resized reconstructed images match mask_reg_edited
+![alt text](image-2.png)

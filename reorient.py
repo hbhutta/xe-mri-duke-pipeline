@@ -7,30 +7,46 @@ import numpy as np
 
 prep_start_time = time()
 
-BASE_DIR = "cohort"
+#BASE_DIR = "cohort"
 
-patient_paths = get_subdirs(dir_=BASE_DIR) # ['cohort/PIm0015', 'cohort/PIm0018', 'cohort/PIm0019', 'cohort/PIm0020', 'cohort/PIm0023', 'cohort/PIm0025', 'cohort/PIm0028', 'cohort/PIm0029', 'cohort/PIm0031', 'cohort/PIm0032']
+patients = [os.path.join("cohort/PIm0015")]
 
-#print(patient_paths)
+ct_mask_img_paths = [os.path.join(patient, "CT_mask.nii") for patient in patients]
 
-ct_mask_file_paths = [os.path.join(patient, "CT_mask.nii") for patient in patient_paths]
-mri_file_paths = [os.path.join(patient, "mask_reg_edited.nii") for patient in patient_paths]
+imgs = [
+    [os.path.join(patient, "mask_reg_edited.nii") for patient in patients],
+    [os.path.join(patient, "image_gas_highreso.nii") for patient in patients],
+    [os.path.join(patient, "image_gas_binned.nii") for patient in patients],
+    [os.path.join(patient, "image_gas_cor.nii") for patient in patients],
+    [os.path.join(patient, "image_rbc2gas_binned.nii") for patient in patients],
+    [os.path.join(patient, "image_rbc2gas.nii") for patient in patients],
+    [os.path.join(patient, "mask_vent.nii") for patient in patients],
+    [os.path.join(patient, "image_membrane.nii") for patient in patients],
+    [os.path.join(patient, "image_membrane2gas_binned.nii") for patient in patients],
+    [os.path.join(patient, "image_membrane2gas.nii") for patient in patients],
+    [os.path.join(patient, "image_gas_binned.nii") for patient in patients]
+]
+
+mri_img_paths = []
+for arr in imgs:
+    mri_img_paths += arr
+
+print(mri_img_paths)
+
 #gas_file_paths = [os.path.join(patient, "gas_binned.nii") for patient in patient_paths]
 #mem_file_paths = [os.path.join(patient, "membranegas_binned.nii") for patient in patient_paths]
 #rbc_file_paths = [os.path.join(patient, "rbc2gas_binned.nii") for patient in patient_paths]
 
-assert len(ct_mask_file_paths) == len(patient_paths)
-assert len(mri_file_paths) == len(patient_paths)
+#assert len(ct_mask_file_paths) == len(patient_paths)
+#assert len(mri_file_paths) == len(patient_paths)
 
-print(ct_mask_file_paths)
-print(mri_file_paths)
 
 
 """
 Reorient CT mask (CT_mask.nii) 
 """
-for ct_mask_file, subdir in zip(ct_mask_file_paths, patient_paths):
-    print(f"reorient.py: Reorienting patient {os.path.basename(subdir)} CT mask")
+for ct_mask_file in ct_mask_img_paths:
+    print(f"reorient.py: Reorienting patient {os.path.dirname(ct_mask_file)} CT mask")
     print(ct_mask_file)
 
     nib_ct = nib.load(ct_mask_file)
@@ -55,8 +71,8 @@ print("done ct reorienting")
 """
 Reorient MRI (mask_reg_edited_scaled.nii) and Ventilation (gas_highreso_scaled.nii)
 """
-for mri_file, subdir in zip(mri_file_paths, patient_paths):
-    print(f"reorient.py: Reorienting patient {os.path.basename(subdir)} ventilation and MRI")
+for mri_file in mri_img_paths:
+    print(f"reorient.py: Reorienting patient {os.path.dirname(mri_file)} ventilation and MRI")
 
     print(mri_file)
 

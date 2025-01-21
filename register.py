@@ -11,7 +11,7 @@ BASE_DIR = "cohort"
 patient_paths = get_subdirs(dir_=BASE_DIR) # ['cohort/PIm0015', 'cohort/PIm0018', 'cohort/PIm0019', 'cohort/PIm0020', 'cohort/PIm0023', 'cohort/PIm0025', 'cohort/PIm0028', 'cohort/PIm0029', 'cohort/PIm0031', 'cohort/PIm0032']
 
 ct_mask_file_paths = [os.path.join(patient, "CT_mask_neg_affine.nii") for patient in patient_paths]
-mri_file_paths = [os.path.join(patient, "mask_reg_edited_mutated_affine.nii") for patient in patient_paths]
+mri_file_paths = [os.path.join(patient, "mask_reg_edited_mutated_affine_resized.nii") for patient in patient_paths]
 
 assert len(ct_mask_file_paths) == len(patient_paths)
 assert len(mri_file_paths) == len(patient_paths)

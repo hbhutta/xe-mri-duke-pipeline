@@ -1,5 +1,7 @@
 """Scripts to run gas exchange mapping pipeline."""
 import logging
+import pickle
+import os 
 
 from absl import app, flags
 from ml_collections import config_flags
@@ -60,7 +62,6 @@ def gx_mapping_reconstruction(config: base_config.Config):
             raise ValueError("Cannot read in raw data files.")
     subject.calculate_rbc_m_ratio()
     logging.info("Reconstructing images")
-    
     subject.preprocess()
     subject.reconstruction_gas()
     subject.reconstruction_dissolved() 
@@ -80,10 +81,12 @@ def gx_mapping_reconstruction(config: base_config.Config):
     
     subject.save_files()
     
+    with open(f'{subject.config.data_dir}/dict_dis.pkl', 'wb') as f:  # open a text file
+        pickle.dump(subject.dict_dis, f) # serialize the list
+
+    
     logging.info("Complete") 
     
-
-
 def gx_mapping_readin(config: base_config.Config):
     """Run the gas exchange imaging pipeline by reading in .mat file.
 
@@ -124,7 +127,7 @@ def main(argv):
         print(f"force_recon: {FLAGS.force_recon}")
         print(
             f"config.processes.gx_mapping_recon: {config.processes.gx_mapping_recon}\n\n\n")
-
+        gx_mapping_reconstruction(config=config)
     elif FLAGS.force_readin or config.processes.gx_mapping_readin:
         print(f"force_readin: {FLAGS.force_readin}")
         print(
@@ -133,35 +136,5 @@ def main(argv):
     else:
         pass
 
-
 if __name__ == "__main__":
     app.run(main)
-
-
-
-"""
-Clean up data dir with:
-rm -rf cohort/PIm123/image_*
-
-If doing automatic segmentation, the manual seg file path does not need to be specified. Run the pipeline with:
-```bash
-python main.py \
-    --config master_config.py \
-    --force_recon \
-    --data_dir ... \ [Required]
-    --subject_id ... \ [Required]
-    --rbc_m_ratio ... \ [Required]
-    --force_segmentation 
-```
-    
-If doing manual segmentation (i.e. the --force_segmentation flag is not enabled) it is assumed that the mask file is stored in the data_dir and 
-that the filename of the mask has the word "mask" in it. Run the pipeline with:
-```bash
-python main.py \
-    --config master_config.py \
-    --force_recon \
-    --data_dir ... \
-    --subject_id ... \
-    --rbc_m_ratio ... \
-```
-"""

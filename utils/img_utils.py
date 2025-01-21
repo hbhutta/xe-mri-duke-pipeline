@@ -2,8 +2,9 @@
 
 import os
 import sys
-
 import cv2
+import dask.array as da
+from dask.diagnostics import ProgressBar
 
 sys.path.append("..")
 from typing import Any, List, Optional, Tuple
@@ -193,15 +194,28 @@ def normalize(
     Returns:
         np.ndarray: normalized image
     """
+
+    mask = mask.astype(bool)
+    if (mask.shape != image.shape):
+        raise ValueError(f"Image and mask must have the same shape")
+
+    dask_image = da.from_array(image, chunks='auto')
+    dask_mask = da.from_array(mask, chunks='auto')
+
     if method == constants.NormalizationMethods.MAX:
         return image * 1.0 / np.max(image)
     elif method == constants.NormalizationMethods.PERCENTILE:
         return image * 1.0 / np.percentile(image, percentile)
     elif method == constants.NormalizationMethods.PERCENTILE_MASKED:
-        image_thre = np.percentile(image[mask], percentile)
-        image_n = np.divide(np.multiply(image, mask), image_thre)
-        image_n[image_n > 1] = 1
-        return image_n
+        #image_thre = np.percentile(np.multiply(image,mask), percentile)
+        image_thre = da.percentile(dask_image[dask_mask], percentile)
+        image_n = da.divide(da.multiply(dask_image, dask_mask), image_thre)
+        #image_n[image_n > 1] = 1
+        image_n = da.clip(image_n, 0, 1)
+
+        return image_n.compute()
+
+
     elif method == constants.NormalizationMethods.MEAN:
         image[np.isnan(image)] = 0
         image[np.isinf(image)] = 0
@@ -343,37 +357,43 @@ def approximate_image_with_bspline(
     # read in the output
     return io_utils.import_nii(pathOutput)
 
-
-
-
-def split_mask(mask_image_file_path: str, save_imgs: bool):
+def split_mask(mask_image_file_path: str) -> list:
     print(f"split_mask received file path: {mask_image_file_path}")
     mask_image = nib.load(filename=mask_image_file_path)
     mask = mask_image.get_fdata()
 
-    print("Splitting mask")
+    dask_mask = da.from_array(mask, chunks=(100, 400, 400))
+
+    unique_values = da.unique(dask_mask).compute()
+    vals = [val for val in unique_values if val != 0]
+    
     splits = []
-    vals = [val for val in np.unique(mask) if val != 0]
-    print("Enumerated unique PIs")
     for val in vals:
-        print(f"Creating split for PI {val}")
-        splits.append(np.where(mask == val, mask, 0))
-        print(f"Created split mask for unique PI {val} in mask")
+        splits.append(da.where(dask_mask == val, dask_mask, 0))
 
-    if save_imgs:
-        print("Making Nifti1Image objects out of splits data")
-        # Will be the same for all splits, because these splits all original from one image
-        affine = mask_image.affine
-        header = mask_image.header
-        basename = os.path.basename(mask_image_file_path)
-        dirname = os.path.dirname(mask_image_file_path)
+    split_filepaths = []
+    print("Making Nifti1Image objects out of splits data")
+    affine = mask_image.affine
+    header = mask_image.header
+    basename = os.path.basename(mask_image_file_path)
+    dirname = os.path.dirname(mask_image_file_path)
 
-        for split_data, unique_val in zip(splits, vals):
-            file_path = f"{dirname}/{basename[:-4]}_split_PI_{int(unique_val)}.nii"
+    for split_data, unique_val in zip(splits, vals):
+        file_path = f"{dirname}/{basename[:-4]}_split_PI_{int(unique_val)}.nii"
+        if (not os.path.isfile(file_path)):
             print(f"Creating image for file path: {file_path}")
-            
-            img = Nifti1Image(dataobj=split_data, affine=affine, header=header) 
-            if (os.path.isfile(file_path)):
-                nib.save(img=img, filename=file_path)
-            else:
-                print(f"Split {file_path} already exists")
+
+            with ProgressBar():
+                split_data_computed = split_data.compute()
+
+            img = Nifti1Image(dataobj=split_data_computed, affine=affine, header=header) 
+            nib.save(img=img, filename=file_path)
+            print(f"Saved img to path {file_path}")
+        else:
+            print(f"File already exists: {file_path}")
+        split_filepaths.append(file_path) 
+    return split_filepaths
+
+
+
+

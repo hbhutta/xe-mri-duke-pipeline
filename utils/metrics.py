@@ -3,6 +3,9 @@ import math
 import sys
 from datetime import datetime
 
+import dask.array as da
+from dask.diagnostics import ProgressBar
+
 sys.path.append("..")
 import numpy as np
 from scipy.ndimage.morphology import binary_dilation
@@ -16,6 +19,7 @@ def _get_dilation_kernel(x: int) -> int:
 
 
 def snr(image: np.ndarray, mask: np.ndarray, window_size: int = 8):
+    print("computing snr")
     """Calculate SNR using sliding windows.
 
     Args:
@@ -49,6 +53,7 @@ def snr(image: np.ndarray, mask: np.ndarray, window_size: int = 8):
     for ii in range(0, int(shape[0] / window_size)):
         for jj in range(0, int(shape[1] / window_size)):
             for kk in range(0, int(shape[2] / window_size)):
+                print(ii, jj, kk)
                 mini_cube_noise_dist = noise_temp[
                     ii * window_size : (ii + 1) * window_size,
                     jj * window_size : (jj + 1) * window_size,
@@ -71,6 +76,7 @@ def snr(image: np.ndarray, mask: np.ndarray, window_size: int = 8):
 
 
 def inflation_volume(mask: np.ndarray, fov: float) -> float:
+    print("Computing inflation volume")
     """Calculate the inflation volume of isotropic 3D image.
 
     Args:
@@ -91,6 +97,7 @@ def process_date() -> str:
 
 
 def bin_percentage(image: np.ndarray, bins: np.ndarray, mask: np.ndarray) -> float:
+    print("computing bin_percentage")
     """Get the percentage of voxels in the given bins.
 
     Args:
@@ -102,10 +109,18 @@ def bin_percentage(image: np.ndarray, bins: np.ndarray, mask: np.ndarray) -> flo
     Returns:
         Percentage of voxels in the given bins.
     """
-    return 100 * np.sum(np.isin(image, bins)) / np.sum(mask > 0)
+
+    dask_image = da.from_array(image, chunks='auto')
+    dask_mask = da.from_array(mask, chunks='auto')
+    dask_bins = da.from_array(bins, chunks='auto')
+
+    res = 100 * da.sum(da.isin(dask_image, dask_bins)) / da.sum(dask_mask > 0) # return 100 * np.sum(np.isin(image, bins)) / np.sum(mask > 0)
+    return res.compute()
+
 
 
 def mean(image: np.ndarray, mask: np.ndarray) -> float:
+    print("computing mean")
     """Get the mean of the image.
 
     Args:
@@ -114,10 +129,24 @@ def mean(image: np.ndarray, mask: np.ndarray) -> float:
     Returns:
         Mean of the image.
     """
-    return np.mean(image[mask])
+    
+    print(f"mean(): image.shape = {image.shape}")
+    print(f"mean(): mask.shape = {mask.shape}")
+
+#    if image.shape != mask.shape:
+#        raise ValueError("image and mask must have the same shape")
+
+    mask = mask.astype(bool)
+    dask_image = da.from_array(image, chunks='auto')
+    dask_mask = da.from_array(mask, chunks='auto')
+
+    res = da.mean(dask_image[dask_mask])
+    
+    return res.compute() #return np.mean(np.multiply(image, mask))
 
 
 def negative_percentage(image: np.ndarray, mask: np.ndarray) -> float:
+    print("computing negative percentage")
     """Get the percentage voxels of image inside mask that are negative.
 
     Args:
@@ -130,6 +159,7 @@ def negative_percentage(image: np.ndarray, mask: np.ndarray) -> float:
 
 
 def median(image: np.ndarray, mask: np.ndarray) -> float:
+    print("computing median")
     """Get the median of the image.
 
     Args:
@@ -142,6 +172,7 @@ def median(image: np.ndarray, mask: np.ndarray) -> float:
 
 
 def std(image: np.ndarray, mask: np.ndarray) -> float:
+    print("computing std")
     """Get the standard deviation of the image.
 
     Args:
@@ -163,6 +194,7 @@ def dlco(
     membrane_mean: float = 0.736,
     rbc_mean: float = 0.471,
 ) -> float:
+    print("computing dlco")
     """Get the DLCO of the image.
 
     Reference: https://journals.physiology.org/doi/epdf/10.1152/japplphysiol.00702.2020
@@ -182,6 +214,7 @@ def dlco(
 
 
 def alveolar_volume(image: np.ndarray, mask: np.ndarray, fov: float) -> float:
+    print("computing alveolar volume")
     """Get the alveolar volume of the image.
 
     Reference: https://journals.physiology.org/doi/epdf/10.1152/japplphysiol.00702.2020

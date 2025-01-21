@@ -576,16 +576,16 @@ class Subject(object):
             dict_stats: Dictionary of statistics for reporting
         """
         self.dict_stats = {
-            constants.IOFields.SUBJECT_ID: self.config.subject_id,
-             constants.IOFields.SCAN_DATE: self.dict_dis[constants.IOFields.SCAN_DATE],
-            constants.IOFields.PROCESS_DATE: metrics.process_date(),
-            constants.StatsIOFields.INFLATION: metrics.inflation_volume(
-                self.mask, self.dict_dis[constants.IOFields.FOV]
-            ),
+            # constants.IOFields.SUBJECT_ID: self.config.subject_id,
+            # constants.IOFields.SCAN_DATE: self.dict_dis[constants.IOFields.SCAN_DATE],
+            # constants.IOFields.PROCESS_DATE: metrics.process_date(),
+            # constants.StatsIOFields.INFLATION: metrics.inflation_volume(
+            #     self.mask, self.dict_dis[constants.IOFields.FOV]
+            # ),
             constants.StatsIOFields.RBC_M_RATIO: self.rbc_m_ratio,
-            constants.StatsIOFields.VENT_SNR: metrics.snr(
-                np.abs(self.image_gas_highreso), self.mask
-            )[1],
+            # constants.StatsIOFields.VENT_SNR: metrics.snr(
+            #     np.abs(self.image_gas_highreso), self.mask
+            # )[1],
             constants.StatsIOFields.VENT_DEFECT_PCT: metrics.bin_percentage(
                 self.image_gas_binned, np.array([1]), self.mask
             ),
@@ -596,15 +596,15 @@ class Subject(object):
                 self.image_gas_binned, np.array([5, 6]), self.mask
             ),
             constants.StatsIOFields.VENT_MEAN: metrics.mean(
-                img_utils.normalize(np.abs(self.image_gas_cor), self.mask), self.mask
+                img_utils.normalize(np.abs(self.image_gas_cor), self.mask, constants.NormalizationMethods.PERCENTILE_MASKED), self.mask
             ),
-            constants.StatsIOFields.VENT_MEDIAN: metrics.median(
-                img_utils.normalize(np.abs(self.image_gas_cor), self.mask), self.mask
-            ),
-            constants.StatsIOFields.VENT_STDDEV: metrics.std(
-                img_utils.normalize(np.abs(self.image_gas_cor), self.mask), self.mask
-            ),
-            constants.StatsIOFields.RBC_SNR: metrics.snr(self.image_rbc, self.mask)[0],
+            # constants.StatsIOFields.VENT_MEDIAN: metrics.median(
+            #     img_utils.normalize(np.abs(self.image_gas_cor), self.mask), self.mask
+            # ),
+            # constants.StatsIOFields.VENT_STDDEV: metrics.std(
+            #     img_utils.normalize(np.abs(self.image_gas_cor), self.mask), self.mask
+            # ),
+            # constants.StatsIOFields.RBC_SNR: metrics.snr(self.image_rbc, self.mask)[0],
             constants.StatsIOFields.RBC_DEFECT_PCT: metrics.bin_percentage(
                 self.image_rbc2gas_binned, np.array([1]), self.mask
             ),
@@ -617,15 +617,15 @@ class Subject(object):
             constants.StatsIOFields.RBC_MEAN: metrics.mean(
                 self.image_rbc2gas, self.mask_vent
             ),
-            constants.StatsIOFields.RBC_MEDIAN: metrics.median(
-                self.image_rbc2gas, self.mask_vent
-            ),
-            constants.StatsIOFields.RBC_STDDEV: metrics.std(
-                self.image_rbc2gas, self.mask_vent
-            ),
-            constants.StatsIOFields.MEMBRANE_SNR: metrics.snr(
-                self.image_membrane, self.mask
-            )[0],
+            # constants.StatsIOFields.RBC_MEDIAN: metrics.median(
+            #     self.image_rbc2gas, self.mask_vent
+            # ),
+            # constants.StatsIOFields.RBC_STDDEV: metrics.std(
+            #     self.image_rbc2gas, self.mask_vent
+            # ),
+            # constants.StatsIOFields.MEMBRANE_SNR: metrics.snr(
+            #     self.image_membrane, self.mask
+            # )[0],
             constants.StatsIOFields.MEMBRANE_DEFECT_PCT: metrics.bin_percentage(
                 self.image_membrane2gas_binned, np.array([1]), self.mask
             ),
@@ -638,32 +638,32 @@ class Subject(object):
             constants.StatsIOFields.MEMBRANE_MEAN: metrics.mean(
                 self.image_membrane2gas, self.mask_vent
             ),
-            constants.StatsIOFields.MEMBRANE_MEDIAN: metrics.median(
-                self.image_membrane2gas, self.mask_vent
-            ),
-            constants.StatsIOFields.MEMBRANE_STDDEV: metrics.std(
-                self.image_membrane2gas, self.mask_vent
-            ),
-            constants.StatsIOFields.ALVEOLAR_VOLUME: metrics.alveolar_volume(
-                self.image_gas_binned, self.mask, self.dict_dis[constants.IOFields.FOV]
-            ),
-            constants.StatsIOFields.KCO_EST: metrics.kco(
-                self.image_membrane2gas,
-                self.image_rbc2gas,
-                self.mask_vent,
-                self.config.reference_data.reference_fit_membrane[1],
-                self.config.reference_data.reference_fit_rbc[1],
-            ),
-            constants.StatsIOFields.DLCO_EST: metrics.dlco(
-                self.image_gas_binned,
-                self.image_membrane2gas,
-                self.image_rbc2gas,
-                self.mask,
-                self.mask_vent,
-                self.dict_dis[constants.IOFields.FOV],
-                self.config.reference_data.reference_fit_membrane[1],
-                self.config.reference_data.reference_fit_rbc[1],
-            ),
+            # constants.StatsIOFields.MEMBRANE_MEDIAN: metrics.median(
+            #     self.image_membrane2gas, self.mask_vent
+            # ),
+            # constants.StatsIOFields.MEMBRANE_STDDEV: metrics.std(
+            #     self.image_membrane2gas, self.mask_vent
+            # ),
+            # constants.StatsIOFields.ALVEOLAR_VOLUME: metrics.alveolar_volume(
+            #     self.image_gas_binned, self.mask, self.dict_dis[constants.IOFields.FOV]
+            # ),
+            # constants.StatsIOFields.KCO_EST: metrics.kco(
+            #     self.image_membrane2gas,
+            #     self.image_rbc2gas,
+            #     self.mask_vent,
+            #     self.config.reference_data.reference_fit_membrane[1],
+            #     self.config.reference_data.reference_fit_rbc[1],
+            # ),
+            # constants.StatsIOFields.DLCO_EST: metrics.dlco(
+            #     self.image_gas_binned,
+            #     self.image_membrane2gas,
+            #     self.image_rbc2gas,
+            #     self.mask,
+            #     self.mask_vent,
+            #     self.dict_dis[constants.IOFields.FOV],
+            #     self.config.reference_data.reference_fit_membrane[1],
+            #     self.config.reference_data.reference_fit_rbc[1],
+            # ),
         }
 
         return self.dict_stats
@@ -905,13 +905,14 @@ class Subject(object):
         """Write statistics to file."""
         # write to combined csv of recently processed subjects
         io_utils.export_subject_csv(
-             {**self.dict_stats}, path="data/stats_all.csv"  # {**self.dict_info, **self.dict_stats}, path="data/stats_all.csv"
+             {**self.dict_stats},
+             path=f"data/stats_all.csv"  # {**self.dict_info, **self.dict_stats}, path="data/stats_all.csv"
         )
 
         # write to individual subject csv
         io_utils.export_subject_csv(
             {**self.dict_stats}, # {**self.dict_info, **self.dict_stats},
-            path=f"tmp/{self.config.subject_id}_stats.csv", # path="tmp/{}_stats.csv".format(self.config.subject_id),
+            path=f"{self.config.data_dir}/{self.config.subject_id}_stats.csv", # path="tmp/{}_stats.csv".format(self.config.subject_id),
             overwrite=False, # True
         )
 
@@ -979,6 +980,12 @@ class Subject(object):
         io_utils.export_nii( # Haad: This was not here originally
             np.abs(self.image_gas_binned),
             f"{self.config.data_dir}/image_gas_binned.nii",
+            self.dict_dis[constants.IOFields.FOV],
+        )
+
+        io_utils.export_nii( # Haad: This was not here originally
+            np.abs(self.mask_vent.astype(int)),
+            f"{self.config.data_dir}/mask_vent.nii",
             self.dict_dis[constants.IOFields.FOV],
         )
 

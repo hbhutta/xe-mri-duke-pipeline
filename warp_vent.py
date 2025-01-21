@@ -9,18 +9,26 @@ import os
 from time import time
 
 start_time = time()
-BASE_DIR = sys.argv[1]
-# subdir_paths = get_subdirs(dir=BASE_DIR)[0:1]
-# ct_mask_file_paths = get_common_files(BASE_DIR, "CT_mask_neg_affine.nii")[0:1]
-# ventilation_file_paths = get_common_files(BASE_DIR,  "gas_highreso_scaled_mutated_affine.nii")[0:1]
 
-# testing with pim0072
-ct_mask_file_paths = ["cohort/PIm0015/CT_mask_neg_affine.nii"]
-mri_file_paths = ["cohort/PIm0015/mask_reg_edited_scaled_mutated_affine.nii"]
-ventilation_file_paths = ["cohort/PIm0015/image_rbc2gas_binned_mutated_affine.nii"]
-subdir_paths = ["cohort/PIm0015"]
+patients = [os.path.join("cohort/PIm0015")]
 
-# assert 0 == 1
+imgs = [
+    [os.path.join(patient, "mask_reg_edited_mutated_affine_resized.nii") for patient in patients],
+    [os.path.join(patient, "image_gas_highreso_mutated_affine_resized.nii") for patient in patients],
+    [os.path.join(patient, "image_gas_binned_mutated_affine_resized.nii") for patient in patients],
+    [os.path.join(patient, "image_gas_cor_mutated_affine_resized.nii") for patient in patients],
+    [os.path.join(patient, "image_rbc2gas_binned_mutated_affine_resized.nii") for patient in patients],
+    [os.path.join(patient, "image_rbc2gas_mutated_affine_resized.nii") for patient in patients],
+    [os.path.join(patient, "mask_vent_mutated_affine_resized.nii") for patient in patients],
+    [os.path.join(patient, "image_membrane_mutated_affine_resized.nii") for patient in patients],
+    [os.path.join(patient, "image_membrane2gas_binned_mutated_affine_resized.nii") for patient in patients],
+    [os.path.join(patient, "image_membrane2gas_mutated_affine_resized.nii") for patient in patients],
+    [os.path.join(patient, "image_gas_binned_mutated_affine_resized.nii") for patient in patients]
+]
+
+mri_img_paths = []
+for arr in imgs:
+    mri_img_paths += arr
 
 
 def apply_fwdtranforms(ANTS_CT, ANTS_Vent, transformlist):
@@ -83,4 +91,10 @@ def warp_image(fixed, moving, transform_list, interpolation='linear'):
 with open(f"cohort/PIm0015/PIm0015_reg.pkl", "rb") as file:
     mytx = pickle.load(file)
 
-warp_image(fixed=ct_mask_file_paths[0], moving=ventilation_file_paths[0], transform_list=mytx['fwdtransforms'])
+
+for img in mri_img_paths:
+    warp_image(fixed=os.path.join(os.path.dirname(img),
+        "CT_mask_neg_affine.nii"), moving=img,
+        transform_list=mytx['fwdtransforms'])
+
+
