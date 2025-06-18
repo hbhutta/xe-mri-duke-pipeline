@@ -1,16 +1,19 @@
 """Metrics for evaluating images."""
+
+import numpy as np
+from scipy.ndimage.morphology import binary_dilation
+from utils import constants
 import math
 import sys
 from datetime import datetime
-
 import dask.array as da
-from dask.diagnostics import ProgressBar
+
+# from dask.diagnostics import ProgressBar
+from dask import config
+
+config.set(scheduler="threads")
 
 sys.path.append("..")
-import numpy as np
-from scipy.ndimage.morphology import binary_dilation
-
-from utils import constants
 
 
 def _get_dilation_kernel(x: int) -> int:
@@ -108,16 +111,54 @@ def bin_percentage(image: np.ndarray, bins: np.ndarray, mask: np.ndarray) -> flo
         mask: np.ndarray mask of the region of interest.
     Returns:
         Percentage of voxels in the given bins.
+        
+    Haad: 
+    np.isin(some_elements, other_elements) checks if each element in element is present in test_elements. 
+    
+    some_elements and other_elements are both array-like objects.
+    
+    some_elements is the underlying 3D data matrix of the binned image,
+    whereas other_elements is a list of discrete pixel intensities (bins) that we want to check against.
+    
+    As an example, if test_elements is the list [1,2,3], and some_elements 
+    has an entry that is 3, then the corresponding voxel (which has the pixel intensity of 3), will be included in the count of voxels that fall into the bins (i.e. the quantity called volume_in_bins).
     """
 
-    dask_image = da.from_array(image, chunks='auto')
-    dask_mask = da.from_array(mask, chunks='auto')
-    dask_bins = da.from_array(bins, chunks='auto')
+    dask_image = da.from_array(image, chunks=(512, 512, 50))
+    dask_mask = da.from_array(mask, chunks=(512, 512, 50))
+    dask_bins = da.from_array(bins, chunks="auto")
 
-    res = 100 * da.sum(da.isin(dask_image, dask_bins)) / da.sum(dask_mask > 0) # return 100 * np.sum(np.isin(image, bins)) / np.sum(mask > 0)
-    return res.compute()
+    # return 100 * np.sum(np.isin(image, bins)) / np.sum(mask > 0)
 
+    mask_volume = da.sum(dask_mask > 0) # dask_mask_sum
+    volume_in_bins = da.sum(da.isin(dask_image, dask_bins)) 
+    print(f"bin_percentage(): volume_in_bins = {volume_in_bins.compute()}")
+    print(f"bin_percentage(): mask_volume = {mask_volume.compute()}")
+    
+    """
+    Haad:
+    We should check if dask_mask_sum is really big or really small.
+    
+    Right now (June 16th, 2025), membrane_defect_pct is all zero so 
+    """
+    # if dask_mask_sum == 0:
+    if math.isclose(mask_volume, 0):
+        raise ValueError(
+            "Haad: da.sum(dask_mask) is very small, bin percentage may be very large!"
+        )
+    # elif math.isclose(dask_mask_sum, float("inf")):
+    #     raise ValueError(
+    #         "Haad: da.sum(dask_mask) is very large, bin percentage may be very small!"
+    #     )
 
+    res = 100 * volume_in_bins / mask_volume
+  
+    res_computed = res.compute()
+    if res_computed > 100:
+        print("Haad: Warning, computed bin percentage greater than 100%.")
+    
+    # return res.compute()
+    return res_computed
 
 def mean(image: np.ndarray, mask: np.ndarray) -> float:
     print("computing mean")
@@ -129,20 +170,34 @@ def mean(image: np.ndarray, mask: np.ndarray) -> float:
     Returns:
         Mean of the image.
     """
-    
+
     print(f"mean(): image.shape = {image.shape}")
     print(f"mean(): mask.shape = {mask.shape}")
 
-#    if image.shape != mask.shape:
-#        raise ValueError("image and mask must have the same shape")
+    if image.shape != mask.shape:
+        raise ValueError("image and mask must have the same shape")
+
+    if not mask.any():
+        raise ValueError("The mask is empty. No region to compute the mean.")
+
+    if np.isnan(image).any() or np.isinf(image).any():
+        raise ValueError("The input image contains NaN or Inf values.")
+
+    #    if image.shape != mask.shape:
+    #        raise ValueError("image and mask must have the same shape")
 
     mask = mask.astype(bool)
-    dask_image = da.from_array(image, chunks='auto')
-    dask_mask = da.from_array(mask, chunks='auto')
+    dask_image = da.from_array(image, chunks=(512, 512, 50))
+    dask_mask = da.from_array(mask, chunks=(512, 512, 50))
 
     res = da.mean(dask_image[dask_mask])
-    
-    return res.compute() #return np.mean(np.multiply(image, mask))
+    res_computed = res.compute()
+
+    print(f"Computed mean: {res_computed}")
+    if np.isnan(res_computed):
+        raise ValueError("Computed result in mean is NaN")
+
+    return res_computed  # return np.mean(np.multiply(image, mask))
 
 
 def negative_percentage(image: np.ndarray, mask: np.ndarray) -> float:

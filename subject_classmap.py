@@ -5,7 +5,8 @@ import os
 import shutil
 from typing import Any, Dict
 
-import nibabel as nib
+# Haad: Errors internal to nibabl may arise owing to deprecated numpy functions
+import nibabel as nib 
 import numpy as np
 
 import biasfield
@@ -289,7 +290,7 @@ class Subject(object):
         elif self.config.recon.recon_key == constants.ReconKey.PLUMMER.value:
             raise NotImplementedError("Plummer CS reconstruction not implemented.")
         else:
-            raise ValueError(f"Unknown reconstruction key")
+            raise ValueError("Unknown reconstruction key")
         self.image_proton = img_utils.interp(
             self.image_proton,
             self.config.recon.matrix_size // self.config.recon.recon_size,
@@ -359,7 +360,7 @@ class Subject(object):
         elif self.config.recon.recon_key == constants.ReconKey.PLUMMER.value:
             raise NotImplementedError("Plummer CS reconstruction not implemented.")
         else:
-            raise ValueError(f"Unknown reconstruction key")
+            raise ValueError("Unknown reconstruction key")
         self.image_dissolved = img_utils.interp(
             self.image_dissolved,
             self.config.recon.matrix_size // self.config.recon.recon_size,
@@ -587,13 +588,18 @@ class Subject(object):
             #     np.abs(self.image_gas_highreso), self.mask
             # )[1],
             constants.StatsIOFields.VENT_DEFECT_PCT: metrics.bin_percentage(
-                self.image_gas_binned, np.array([1]), self.mask
+                # self.image_gas_binned, np.array([1]), self.mask
+                self.image_gas_binned, np.array([8]), self.mask
             ),
             constants.StatsIOFields.VENT_LOW_PCT: metrics.bin_percentage(
-                self.image_gas_binned, np.array([2]), self.mask
+                # self.image_gas_binned, np.array([2]), self.mask
+                self.image_gas_binned, np.array([16]), self.mask
+
             ),
             constants.StatsIOFields.VENT_HIGH_PCT: metrics.bin_percentage(
-                self.image_gas_binned, np.array([5, 6]), self.mask
+                # self.image_gas_binned, np.array([5, 6]), self.mask
+                self.image_gas_binned, np.array([40, 48]), self.mask
+
             ),
             constants.StatsIOFields.VENT_MEAN: metrics.mean(
                 img_utils.normalize(np.abs(self.image_gas_cor), self.mask, constants.NormalizationMethods.PERCENTILE_MASKED), self.mask
@@ -606,13 +612,16 @@ class Subject(object):
             # ),
             # constants.StatsIOFields.RBC_SNR: metrics.snr(self.image_rbc, self.mask)[0],
             constants.StatsIOFields.RBC_DEFECT_PCT: metrics.bin_percentage(
-                self.image_rbc2gas_binned, np.array([1]), self.mask
+                # self.image_rbc2gas_binned, np.array([1]), self.mask_vent # previously self.mask
+                self.image_rbc2gas_binned, np.array([8]), self.mask_vent 
             ),
             constants.StatsIOFields.RBC_LOW_PCT: metrics.bin_percentage(
-                self.image_rbc2gas_binned, np.array([2]), self.mask
+                # self.image_rbc2gas_binned, np.array([2]), self.mask_vent # previously self.mask
+                self.image_rbc2gas_binned, np.array([16]), self.mask_vent 
             ),
             constants.StatsIOFields.RBC_HIGH_PCT: metrics.bin_percentage(
-                self.image_rbc2gas_binned, np.array([5, 6]), self.mask
+                # self.image_rbc2gas_binned, np.array([5, 6]), self.mask_vent # previously self.mask
+                self.image_rbc2gas_binned, np.array([40, 48]), self.mask_vent 
             ),
             constants.StatsIOFields.RBC_MEAN: metrics.mean(
                 self.image_rbc2gas, self.mask_vent
@@ -627,13 +636,17 @@ class Subject(object):
             #     self.image_membrane, self.mask
             # )[0],
             constants.StatsIOFields.MEMBRANE_DEFECT_PCT: metrics.bin_percentage(
-                self.image_membrane2gas_binned, np.array([1]), self.mask
+                # self.image_membrane2gas_binned, np.array([1]), self.mask_vent # previously self.mask
+                self.image_membrane2gas_binned, np.array([8]), self.mask_vent
+
             ),
             constants.StatsIOFields.MEMBRANE_LOW_PCT: metrics.bin_percentage(
-                self.image_membrane2gas_binned, np.array([2]), self.mask
+                # self.image_membrane2gas_binned, np.array([2]), self.mask_vent # previously self.mask
+                self.image_membrane2gas_binned, np.array([16]), self.mask_vent # previously self.mask
             ),
             constants.StatsIOFields.MEMBRANE_HIGH_PCT: metrics.bin_percentage(
-                self.image_membrane2gas_binned, np.array([6, 7, 8]), self.mask
+                # self.image_membrane2gas_binned, np.array([6, 7, 8]), self.mask_vent # previously self.mask
+                self.image_membrane2gas_binned, np.array([48, 56, 64]), self.mask_vent # previously self.mask
             ),
             constants.StatsIOFields.MEMBRANE_MEAN: metrics.mean(
                 self.image_membrane2gas, self.mask_vent
@@ -904,10 +917,10 @@ class Subject(object):
     def write_stats_to_csv(self):
         """Write statistics to file."""
         # write to combined csv of recently processed subjects
-        io_utils.export_subject_csv(
-             {**self.dict_stats},
-             path=f"data/stats_all.csv"  # {**self.dict_info, **self.dict_stats}, path="data/stats_all.csv"
-        )
+        # io_utils.export_subject_csv(
+        #      {**self.dict_stats},
+        #      path="data/stats_all.csv"  # {**self.dict_info, **self.dict_stats}, path="data/stats_all.csv"
+        # )
 
         # write to individual subject csv
         io_utils.export_subject_csv(
@@ -1071,7 +1084,7 @@ class Subject(object):
             f"{output_path}/{self.config.subject_id}_stats.csv", # Full statistics
             f"{output_path}/{self.config.subject_id}_config_gx_imaging.json" # Configurations from config .py file in JSON
             f"tmp/membrane2gas.nii", # gas-normalized membrane image
-            f"tmp/rbc2gas.nii", # gas-normalized rbc image
+            "tmp/rbc2gas.nii", # gas-normalized rbc image
         )
         io_utils.move_or_copy_files(relevant_files, os.path.join(self.config.data_dir, f"{self.config.subject_id}_relevant_files"), move=False)
         
