@@ -10,20 +10,26 @@ BASE_DIR = "cohort"
 
 patient_paths = get_subdirs(dir_=BASE_DIR) # ['cohort/PIm0015', 'cohort/PIm0018', 'cohort/PIm0019', 'cohort/PIm0020', 'cohort/PIm0023', 'cohort/PIm0025', 'cohort/PIm0028', 'cohort/PIm0029', 'cohort/PIm0031', 'cohort/PIm0032']
 
+# We may have to separately register both mask_reg_edited and mask_vent (since they won't match each other)
+# If we register M to C and X is of the same type as M, only then can we apply ft on X 
 ct_mask_file_paths = [os.path.join(patient, "CT_mask_neg_affine.nii") for patient in patient_paths]
-mri_file_paths = [os.path.join(patient, "mask_reg_edited_mutated_affine_resized.nii") for patient in patient_paths]
+mask_reg_edited_file_paths = [os.path.join(patient, "mask_reg_edited_mutated_affine_resized.nii") for patient in patient_paths]
+mask_vent_file_paths = [os.path.join(patient, "mask_vent_mutated_affine_resized.nii") for patient in patient_paths]
 
 assert len(ct_mask_file_paths) == len(patient_paths)
-assert len(mri_file_paths) == len(patient_paths)
+assert len(mask_reg_edited_file_paths) == len(patient_paths)
 
 print(patient_paths)
 print(ct_mask_file_paths)
-print(mri_file_paths)
+print(mask_reg_edited_file_paths)
+print(mask_vent_file_paths)
+#assert 0 == 1
 
-def register(ct_filename: str, mri_filename: str, save_dir: str) -> None:
+def register(ct_filename: str, target_filename: str, save_dir: str) -> None:
+    print(f"target_filename is {target_filename}")
     if (not os.path.isfile(f"{save_dir}/{os.path.basename(save_dir)}_reg.pkl")):
         ct_ants = ants.image_read(filename=ct_filename)
-        mri_ants = ants.image_read(filename=mri_filename)
+        mri_ants = ants.image_read(filename=target_filename)
 
         type_of_transform = "Similarity"
         prep = ants.registration(
@@ -58,9 +64,17 @@ def register(ct_filename: str, mri_filename: str, save_dir: str) -> None:
 
         print(f"Finished similarity registration for patient {os.path.basename(save_dir)}!\n\n\n")
 
-        with open(f"{save_dir}/{os.path.basename(save_dir)}_reg.pkl", "wb") as file:
+        saved_pickle_extension = ""
+        if ("mask_vent" in target_filename):
+            saved_pickle_extension = "vent"
+        if ("mask_reg" in target_filename):
+            saved_pickle_extension = "reg"
+
+        save_path = f"{save_dir}/{os.path.basename(save_dir)}_{saved_pickle_extension}.pkl"
+           
+        with open(f"{save_path}", "wb") as file:
             pickle.dump(reg, file)
-            print(f"{save_dir}/{os.path.basename(save_dir)}_reg.pkl saved!")
+            print(f"{save_path} saved!")
     else:
         print(f"Registration already done for {os.path.basename(save_dir)}, skipping...")
 
@@ -71,7 +85,8 @@ def register(ct_filename: str, mri_filename: str, save_dir: str) -> None:
 
 def main():
     with Pool() as pool:
-        pool.starmap(register, zip(ct_mask_file_paths, mri_file_paths, patient_paths))
+        pool.starmap(register, zip(ct_mask_file_paths, mask_reg_edited_file_paths, patient_paths))
+        pool.starmap(register, zip(ct_mask_file_paths, mask_vent_file_paths, patient_paths))
 
 if __name__ == '__main__':
     start = datetime.now()

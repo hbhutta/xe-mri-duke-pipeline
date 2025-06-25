@@ -2,16 +2,33 @@ from utils.os_utils import get_common_files, get_subdirs, aff2axcodes_RAS
 import os
 import nibabel as nib
 from time import time
-from sys import argv
+import sys
 import numpy as np
 
 prep_start_time = time()
 
-#BASE_DIR = "cohort"
+import sys
 
-patients = [os.path.join("cohort/PIm0015")]
+if len(sys.argv) < 2:
+    print("Usage: python reorient.py <patient_dir>")
+    sys.exit(1)
 
-ct_mask_img_paths = [os.path.join(patient, "CT_mask.nii") for patient in patients]
+BASE_DIR = sys.argv[1]
+
+patients = [BASE_DIR]
+
+# these cts will not be warped or resized, only reoriented
+cts = [
+    [os.path.join(patient, "CT_mask.nii") for patient in patients],
+    [os.path.join(patient, "CT_lobe_mask.nii") for patient in patients],
+    [os.path.join(patient, "ct_corepeel_mask.nii") for patient in patients],
+]
+
+ct_mask_img_paths = []
+for ct in cts:
+    ct_mask_img_paths += ct
+
+print(ct_mask_img_paths)
 
 imgs = [
     [os.path.join(patient, "mask_reg_edited.nii") for patient in patients],
@@ -97,3 +114,5 @@ for mri_file in mri_img_paths:
 
 prep_end_time = time()
 print(f"That took: {prep_end_time - prep_start_time} min/sec")
+
+

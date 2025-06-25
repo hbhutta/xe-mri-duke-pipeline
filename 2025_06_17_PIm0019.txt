@@ -1,0 +1,24 @@
+Read rbc-membrane ratio of 0.354. Starting reconstruction.
+Traceback (most recent call last):
+  File "/data/Haad/xe-mri-rachel/xenon-gas-exchange-consortium-main_james_version/reconstruct.py", line 11, in <module>
+    from subject_classmap import Subject
+  File "/data/Haad/xe-mri-rachel/xenon-gas-exchange-consortium-main_james_version/subject_classmap.py", line 9, in <module>
+    import nibabel as nib 
+    ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hbhutta/lib/python3.12/site-packages/nibabel/__init__.py", line 41, in <module>
+    from . import analyze as ana
+  File "/home/hbhutta/lib/python3.12/site-packages/nibabel/analyze.py", line 88, in <module>
+    from .arrayproxy import ArrayProxy
+  File "/home/hbhutta/lib/python3.12/site-packages/nibabel/arrayproxy.py", line 39, in <module>
+    from .volumeutils import apply_read_scaling, array_from_file
+  File "/home/hbhutta/lib/python3.12/site-packages/nibabel/volumeutils.py", line 23, in <module>
+    from .casting import OK_FLOATS, shared_range
+  File "/home/hbhutta/lib/python3.12/site-packages/nibabel/casting.py", line 723, in <module>
+    OK_FLOATS = ok_floats()
+                ^^^^^^^^^^^
+  File "/home/hbhutta/lib/python3.12/site-packages/nibabel/casting.py", line 717, in ok_floats
+    floats = np.sctypes['float'][:]
+             ^^^^^^^^^^
+  File "/home/hbhutta/lib/python3.12/site-packages/numpy/__init__.py", line 400, in __getattr__
+    raise AttributeError(
+AttributeError: `np.sctypes` was removed in the NumPy 2.0 release. Access dtypes explicitly instead.

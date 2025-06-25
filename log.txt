@@ -1,5 +1,0 @@
-bar
-Traceback (most recent call last):
-  File "foo.py", line 17, in <module>
-    pafnt('abc')
-NameError: name 'pafnt' is not defined

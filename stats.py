@@ -48,6 +48,18 @@ def compute_split_product(img_path: str, split_path: str) -> str:
     os.system(cmd)
     return new_img_path
 
+def homogenize_mask(mask_path: str) -> None:
+    if not os.path.isfile(mask_path):
+        raise FileNotFoundError(f"File {mask_path} does not exist")
+    mask = nib.load(mask_path)
+    mask_data = mask.get_fdata()
+    mask_data = np.where(mask_data > 1, 1, 0) # Ensure binary mask
+    mask_homogenized = nib.Nifti1Image(mask_data, mask.affine, mask.header)
+    new_mask_path = os.path.join(
+        os.path.dirname(mask_path), f"{basename(mask_path)}_homogenized.nii"
+    )
+    nib.save(mask_homogenized, new_mask_path)
+
 
 def compute_patient_stats(config: base_config.Config):
     """Compute statistics for the patient
@@ -149,9 +161,11 @@ def compute_patient_stats(config: base_config.Config):
     """
     Haad: This line should be after the for loop that splits the masks
     into the core, peel, five lobes, etc.. because the CT_mask should not be # split
-
     """
-    splits.append(os.path.join(f"{subject.config.data_dir}", "CT_mask_neg_affine.nii"))
+    
+    homogenize_mask(mask_path=os.path.join(subject.config.data_dir, "CT_mask_neg_affine.nii"))
+
+    splits.append(os.path.join(f"{subject.config.data_dir}", "CT_mask_neg_affine_homogenized.nii"))
     
     pixel_intensities = [8, 16, 32, 64, 128, 40, 50, 1]
     assert len(pixel_intensities) == len(splits)
@@ -224,9 +238,9 @@ def compute_patient_stats(config: base_config.Config):
     ).get_fdata()
 
 
-    for split in splits:
-        print(f"Processing split {split}")
-        subject.mask = np.where(nib.load(split).get_fdata() > 0.5, 1, 0)
+    for k in splits_dict.keys():
+        print(f"Processing split {splits_dict[k][0]}")
+        subject.mask = np.where(nib.load(splits_dict[k][0]).get_fdata() > 0.5, 1, 0)
 
         """
         Haad:
@@ -281,19 +295,19 @@ def compute_patient_stats(config: base_config.Config):
         of the product image (after the call to compute_split_product).
         
         """
-
+        
         # Computing intersection between split and processed mask_vent
         mask_vent_path = os.path.join(
             subject.config.data_dir, "mask_vent_mutated_affine_resized_warped.nii"
         )
         subject.mask_vent = nib.load(
-            compute_split_product(mask_vent_path, split)
+            compute_split_product(mask_vent_path, splits_dict[k][0])
         ).get_fdata()
 
         # Dividing the data of the product by the currrent pixel intensity
-        subject.mask_vent = subject.mask_vent / 8
+        subject.mask_vent = subject.mask_vent / splits_dict[k][1]
         print(
-            f"stats.py: Set subject.mask_vent to its intersection with the current split ({split})"
+            f"stats.py: Set subject.mask_vent to its intersection with the current split ({splits_dict[k][0]})"
         )
 
         # Computing intersection between split and processed image_gas_binned
@@ -302,10 +316,11 @@ def compute_patient_stats(config: base_config.Config):
             "image_gas_binned_mutated_affine_resized_warped.nii",
         )
         subject.image_gas_binned = nib.load(
-            compute_split_product(image_gas_binned_path, split)
+            compute_split_product(image_gas_binned_path, splits_dict[k][0])
         ).get_fdata()
+        subject.image_gas_binned = subject.image_gas_binned / splits_dict[k][1]
         print(
-            f"stats.py: Set subject.image_gas_binned to its intersection with the current split ({split})"
+            f"stats.py: Set subject.image_gas_binned to its intersection with the current split ({splits_dict[k][0]})"
         )
 
         # Computing intersection between split and processed image_rbc2gas_binned
@@ -314,10 +329,11 @@ def compute_patient_stats(config: base_config.Config):
             "image_rbc2gas_binned_mutated_affine_resized_warped.nii",
         )
         subject.image_rbc2gas_binned = nib.load(
-            compute_split_product(image_rbc2gas_binned_path, split)
+            compute_split_product(image_rbc2gas_binned_path, splits_dict[k][0])
         ).get_fdata()
+        subject.image_rbc2gas_binned = subject.image_rbc2gas_binned / splits_dict[k][1]
         print(
-            f"stats.py: Set subject.image_rbc2gas_binned to its intersection with the current split ({split})"
+            f"stats.py: Set subject.image_rbc2gas_binned to its intersection with the current split ({splits_dict[k][0]})"
         )
 
         # Computing intersection between split and processed image_rbc2gas
@@ -325,10 +341,10 @@ def compute_patient_stats(config: base_config.Config):
             subject.config.data_dir, "image_rbc2gas_mutated_affine_resized_warped.nii"
         )
         subject.image_rbc2gas = nib.load(
-            compute_split_product(image_rbc2gas_path, split)
+            compute_split_product(image_rbc2gas_path, splits_dict[k][0])
         ).get_fdata()
         print(
-            f"stats.py: Set subject.image_rbc2gas to its intersection with the current split ({split})"
+            f"stats.py: Set subject.image_rbc2gas to its intersection with the current split ({splits_dict[k][0]})"
         )
 
         # Computing intersection between split and processed image_membrane2gas_binned
@@ -337,10 +353,11 @@ def compute_patient_stats(config: base_config.Config):
             "image_membrane2gas_binned_mutated_affine_resized_warped.nii",
         )
         subject.image_membrane2gas_binned = nib.load(
-            compute_split_product(image_membrane2gas_binned_path, split)
+            compute_split_product(image_membrane2gas_binned_path, splits_dict[k][0])
         ).get_fdata()
+        subject.image_membrane2gas_binned = subject.image_membrane2gas_binned / splits_dict[k][1]
         print(
-            f"stats.py: Set subject.image_membrane2gas_binned to its intersection with the current split ({split})"
+            f"stats.py: Set subject.image_membrane2gas_binned to its intersection with the current split ({splits_dict[k][0]})"
         )
 
         # Computing intersection between split and processed image_membrane2gas
@@ -349,10 +366,10 @@ def compute_patient_stats(config: base_config.Config):
             "image_membrane2gas_mutated_affine_resized_warped.nii",
         )
         subject.image_membrane2gas = nib.load(
-            compute_split_product(image_membrane2gas_path, split)
+            compute_split_product(image_membrane2gas_path, splits_dict[k][0])
         ).get_fdata()
         print(
-            f"stats.py: Set subject.image_membrane2gas to its intersection with the current split ({split})"
+            f"stats.py: Set subject.image_membrane2gas to its intersection with the current split ({splits_dict[k][0]})"
         )
 
         # Retreiving dictionary to get values like fov

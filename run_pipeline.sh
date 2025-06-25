@@ -11,7 +11,6 @@ for patient_dir in cohort/*; do
     --subject_id $(basename $patient_dir) \
     --rbc_m_ratio = 
     --force_recon 
-
     fi
 done
 python reconstruct.py --config config/tests/PIm02_master.py --force_recon 

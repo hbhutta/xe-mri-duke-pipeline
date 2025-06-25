@@ -10,7 +10,6 @@ from config import config_utils
 # parent directory
 sys.path.append("..")
 
-
 class Config(config_dict.ConfigDict):
     """Base config file.
 
@@ -33,12 +32,12 @@ class Config(config_dict.ConfigDict):
     def __init__(self):
         """Initialize config parameters."""
         super().__init__()
-        self.data_dir = "cohort/PIm0015/"
+        self.data_dir = "" # "cohort/PIm0015/"
         # "/home/smostafavi/XeGas/xenon-gas-exchange-consortium-main/data/scanfolder/mask_reg_edited.nii"
         # change 8 times for each mask type
         
         # manual_seg_filepath is ignored if we don't have
-        self.manual_seg_filepath = "cohort/PIm0015/mask_reg_edited.nii"
+        self.manual_seg_filepath = "default" # "cohort/PIm0015/mask_reg_edited.nii"
         self.manual_reg_filepath = ""
         self.processes = Process()
         self.recon = Recon()
@@ -54,8 +53,8 @@ class Config(config_dict.ConfigDict):
         # constants.HbCorrectionKey.NONE.value
         self.hb_correction_key = constants.HbCorrectionKey.NONE.value
         self.hb = 0.0
-        self.subject_id = "PIm0015" # "PIm0075"  # "PIm0377"
-        self.rbc_m_ratio = 0.534 # 0.403
+        self.subject_id = "" # "PIm0015" # "PIm0075"  # "PIm0377"
+        self.rbc_m_ratio = 0.0 # 0.534 # 0.403
 
 
 class Process(object):

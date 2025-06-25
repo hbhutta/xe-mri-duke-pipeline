@@ -357,6 +357,7 @@ def approximate_image_with_bspline(
     # read in the output
     return io_utils.import_nii(pathOutput)
 
+# Haad: Custom function to split mask images into separate files based on unique pixel intensity values.
 def split_mask(mask_image_file_path: str) -> list:
     print(f"split_mask received file path: {mask_image_file_path}")
     mask_image = nib.load(filename=mask_image_file_path)

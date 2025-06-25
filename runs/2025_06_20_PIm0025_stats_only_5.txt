@@ -1,0 +1,688 @@
+/home/hbhutta/miniconda3/envs/xe-mri/lib/python3.8/site-packages/ml_collections/config_flags/config_flags.py:19: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
+  import imp
+2025-06-20 18:15:12.356838: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-06-20 18:15:12.472611: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home/hbhutta/miniconda3/envs/xe-mri/lib/python3.8/site-packages/cv2/../../lib64:
+2025-06-20 18:15:12.472656: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2025-06-20 18:15:12.505884: E tensorflow/stream_executor/cuda/cuda_blas.cc:2981] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-06-20 18:15:13.132649: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer.so.7'; dlerror: libnvinfer.so.7: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home/hbhutta/miniconda3/envs/xe-mri/lib/python3.8/site-packages/cv2/../../lib64:
+2025-06-20 18:15:13.132754: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer_plugin.so.7'; dlerror: libnvinfer_plugin.so.7: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home/hbhutta/miniconda3/envs/xe-mri/lib/python3.8/site-packages/cv2/../../lib64:
+2025-06-20 18:15:13.132765: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
+WARNING:tensorflow:From /home/hbhutta/miniconda3/envs/xe-mri/lib/python3.8/site-packages/tensorflow/python/compat/v2_compat.py:107: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
+Instructions for updating:
+non-resource variables are not supported in the long term
+/home/hbhutta/miniconda3/envs/xe-mri/lib/python3.8/site-packages/keras/optimizers/optimizer_v2/adam.py:114: UserWarning: The `lr` argument is deprecated, use `learning_rate` instead.
+  super().__init__(name, **kwargs)
+/data/Haad/xe-mri-rachel/xenon-gas-exchange-consortium-main_james_version/utils/metrics.py:4: DeprecationWarning: Please use `binary_dilation` from the `scipy.ndimage` namespace, the `scipy.ndimage.morphology` namespace is deprecated.
+  from scipy.ndimage.morphology import binary_dilation
+2025-06-20 18:15:13.807358: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home/hbhutta/miniconda3/envs/xe-mri/lib/python3.8/site-packages/cv2/../../lib64:
+2025-06-20 18:15:13.807414: W tensorflow/stream_executor/cuda/cuda_driver.cc:263] failed call to cuInit: UNKNOWN ERROR (303)
+2025-06-20 18:15:13.807435: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (epyc02): /proc/driver/nvidia/version does not exist
+I0620 18:15:13.807621 140669580527424 subject_classmap.py:74] Initializing gas exchange imaging subject.
+split_mask received file path: cohort/PIm0025/CT_lobe_mask_neg_affine.nii
+Making Nifti1Image objects out of splits data
+File already exists: cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_8.nii
+File already exists: cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_16.nii
+File already exists: cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_32.nii
+File already exists: cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_64.nii
+File already exists: cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_128.nii
+split_mask received file path: cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z.nii
+Making Nifti1Image objects out of splits data
+File already exists: cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40.nii
+File already exists: cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50.nii
+Processing split cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_8.nii
+Reading #1 from cohort/PIm0025/mask_vent_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_8.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/mask_vent_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_8_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.mask_vent to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_8.nii)
+Reading #1 from cohort/PIm0025/image_gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_8.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_gas_binned_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_8_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_gas_binned to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_8.nii)
+Reading #1 from cohort/PIm0025/image_rbc2gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_8.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_rbc2gas_binned_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_8_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_rbc2gas_binned to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_8.nii)
+Reading #1 from cohort/PIm0025/image_rbc2gas_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_8.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_rbc2gas_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_8_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_rbc2gas to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_8.nii)
+Reading #1 from cohort/PIm0025/image_membrane2gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_8.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_membrane2gas_binned_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_8_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_membrane2gas_binned to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_8.nii)
+Reading #1 from cohort/PIm0025/image_membrane2gas_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_8.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_membrane2gas_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_8_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_membrane2gas to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_8.nii)
+computing bin_percentage
+bin_percentage(): volume_in_bins = 2643
+bin_percentage(): mask_volume = 2214028
+computing bin_percentage
+bin_percentage(): volume_in_bins = 151082
+bin_percentage(): mask_volume = 2214028
+computing bin_percentage
+bin_percentage(): volume_in_bins = 304241
+bin_percentage(): mask_volume = 2214028
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.6720158783477487
+computing bin_percentage
+bin_percentage(): volume_in_bins = 52797
+bin_percentage(): mask_volume = 2032874
+computing bin_percentage
+bin_percentage(): volume_in_bins = 351066
+bin_percentage(): mask_volume = 2032874
+computing bin_percentage
+bin_percentage(): volume_in_bins = 675
+bin_percentage(): mask_volume = 2032874
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.02955604905294875
+computing bin_percentage
+bin_percentage(): volume_in_bins = 25677
+bin_percentage(): mask_volume = 2032874
+computing bin_percentage
+bin_percentage(): volume_in_bins = 500886
+bin_percentage(): mask_volume = 2032874
+computing bin_percentage
+bin_percentage(): volume_in_bins = 0
+bin_percentage(): mask_volume = 2032874
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.051071061390206354
+Processing split cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_16.nii
+Reading #1 from cohort/PIm0025/mask_vent_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_16.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/mask_vent_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_16_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.mask_vent to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_16.nii)
+Reading #1 from cohort/PIm0025/image_gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_16.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_gas_binned_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_16_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_gas_binned to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_16.nii)
+Reading #1 from cohort/PIm0025/image_rbc2gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_16.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_rbc2gas_binned_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_16_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_rbc2gas_binned to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_16.nii)
+Reading #1 from cohort/PIm0025/image_rbc2gas_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_16.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_rbc2gas_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_16_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_rbc2gas to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_16.nii)
+Reading #1 from cohort/PIm0025/image_membrane2gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_16.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_membrane2gas_binned_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_16_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_membrane2gas_binned to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_16.nii)
+Reading #1 from cohort/PIm0025/image_membrane2gas_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_16.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_membrane2gas_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_16_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_membrane2gas to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_16.nii)
+computing bin_percentage
+bin_percentage(): volume_in_bins = 4156
+bin_percentage(): mask_volume = 2173890
+computing bin_percentage
+bin_percentage(): volume_in_bins = 131444
+bin_percentage(): mask_volume = 2173890
+computing bin_percentage
+bin_percentage(): volume_in_bins = 348018
+bin_percentage(): mask_volume = 2173890
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.7240849036712449
+computing bin_percentage
+bin_percentage(): volume_in_bins = 37371
+bin_percentage(): mask_volume = 2066466
+computing bin_percentage
+bin_percentage(): volume_in_bins = 337060
+bin_percentage(): mask_volume = 2066466
+computing bin_percentage
+bin_percentage(): volume_in_bins = 12
+bin_percentage(): mask_volume = 2066466
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.05915676879747412
+computing bin_percentage
+bin_percentage(): volume_in_bins = 0
+bin_percentage(): mask_volume = 2066466
+computing bin_percentage
+bin_percentage(): volume_in_bins = 69819
+bin_percentage(): mask_volume = 2066466
+computing bin_percentage
+bin_percentage(): volume_in_bins = 0
+bin_percentage(): mask_volume = 2066466
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.12237796711897365
+Processing split cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_32.nii
+Reading #1 from cohort/PIm0025/mask_vent_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_32.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/mask_vent_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_32_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.mask_vent to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_32.nii)
+Reading #1 from cohort/PIm0025/image_gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_32.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_gas_binned_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_32_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_gas_binned to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_32.nii)
+Reading #1 from cohort/PIm0025/image_rbc2gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_32.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_rbc2gas_binned_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_32_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_rbc2gas_binned to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_32.nii)
+Reading #1 from cohort/PIm0025/image_rbc2gas_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_32.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_rbc2gas_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_32_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_rbc2gas to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_32.nii)
+Reading #1 from cohort/PIm0025/image_membrane2gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_32.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_membrane2gas_binned_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_32_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_membrane2gas_binned to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_32.nii)
+Reading #1 from cohort/PIm0025/image_membrane2gas_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_32.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_membrane2gas_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_32_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_membrane2gas to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_32.nii)
+computing bin_percentage
+bin_percentage(): volume_in_bins = 9017
+bin_percentage(): mask_volume = 1838153
+computing bin_percentage
+bin_percentage(): volume_in_bins = 164201
+bin_percentage(): mask_volume = 1838153
+computing bin_percentage
+bin_percentage(): volume_in_bins = 254351
+bin_percentage(): mask_volume = 1838153
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.698842177158575
+computing bin_percentage
+bin_percentage(): volume_in_bins = 58946
+bin_percentage(): mask_volume = 1772254
+computing bin_percentage
+bin_percentage(): volume_in_bins = 313524
+bin_percentage(): mask_volume = 1772254
+computing bin_percentage
+bin_percentage(): volume_in_bins = 189
+bin_percentage(): mask_volume = 1772254
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.11433713523789141
+computing bin_percentage
+bin_percentage(): volume_in_bins = 2455
+bin_percentage(): mask_volume = 1772254
+computing bin_percentage
+bin_percentage(): volume_in_bins = 325719
+bin_percentage(): mask_volume = 1772254
+computing bin_percentage
+bin_percentage(): volume_in_bins = 0
+bin_percentage(): mask_volume = 1772254
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.21497393089226974
+Processing split cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_64.nii
+Reading #1 from cohort/PIm0025/mask_vent_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_64.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/mask_vent_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_64_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.mask_vent to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_64.nii)
+Reading #1 from cohort/PIm0025/image_gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_64.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_gas_binned_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_64_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_gas_binned to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_64.nii)
+Reading #1 from cohort/PIm0025/image_rbc2gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_64.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_rbc2gas_binned_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_64_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_rbc2gas_binned to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_64.nii)
+Reading #1 from cohort/PIm0025/image_rbc2gas_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_64.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_rbc2gas_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_64_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_rbc2gas to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_64.nii)
+Reading #1 from cohort/PIm0025/image_membrane2gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_64.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_membrane2gas_binned_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_64_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_membrane2gas_binned to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_64.nii)
+Reading #1 from cohort/PIm0025/image_membrane2gas_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_64.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_membrane2gas_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_64_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_membrane2gas to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_64.nii)
+computing bin_percentage
+bin_percentage(): volume_in_bins = 1021
+bin_percentage(): mask_volume = 958593
+computing bin_percentage
+bin_percentage(): volume_in_bins = 80770
+bin_percentage(): mask_volume = 958593
+computing bin_percentage
+bin_percentage(): volume_in_bins = 116658
+bin_percentage(): mask_volume = 958593
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.704648060548472
+computing bin_percentage
+bin_percentage(): volume_in_bins = 147430
+bin_percentage(): mask_volume = 927419
+computing bin_percentage
+bin_percentage(): volume_in_bins = 344527
+bin_percentage(): mask_volume = 927419
+computing bin_percentage
+bin_percentage(): volume_in_bins = 0
+bin_percentage(): mask_volume = 927419
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.14901912837827347
+computing bin_percentage
+bin_percentage(): volume_in_bins = 5417
+bin_percentage(): mask_volume = 927419
+computing bin_percentage
+bin_percentage(): volume_in_bins = 627081
+bin_percentage(): mask_volume = 927419
+computing bin_percentage
+bin_percentage(): volume_in_bins = 0
+bin_percentage(): mask_volume = 927419
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.3458546292355926
+Processing split cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_128.nii
+Reading #1 from cohort/PIm0025/mask_vent_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_128.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/mask_vent_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_128_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.mask_vent to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_128.nii)
+Reading #1 from cohort/PIm0025/image_gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_128.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_gas_binned_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_128_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_gas_binned to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_128.nii)
+Reading #1 from cohort/PIm0025/image_rbc2gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_128.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_rbc2gas_binned_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_128_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_rbc2gas_binned to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_128.nii)
+Reading #1 from cohort/PIm0025/image_rbc2gas_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_128.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_rbc2gas_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_128_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_rbc2gas to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_128.nii)
+Reading #1 from cohort/PIm0025/image_membrane2gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_128.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_membrane2gas_binned_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_128_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_membrane2gas_binned to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_128.nii)
+Reading #1 from cohort/PIm0025/image_membrane2gas_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_128.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_membrane2gas_mutated_affine_resized_warped__CT_lobe_mask_neg_affine_split_PI_128_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_membrane2gas to its intersection with the current split (cohort/PIm0025/CT_lobe_mask_neg_affine_split_PI_128.nii)
+computing bin_percentage
+bin_percentage(): volume_in_bins = 8250
+bin_percentage(): mask_volume = 2491724
+computing bin_percentage
+bin_percentage(): volume_in_bins = 172121
+bin_percentage(): mask_volume = 2491724
+computing bin_percentage
+bin_percentage(): volume_in_bins = 363132
+bin_percentage(): mask_volume = 2491724
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.6570317557854388
+computing bin_percentage
+bin_percentage(): volume_in_bins = 59273
+bin_percentage(): mask_volume = 2402689
+computing bin_percentage
+bin_percentage(): volume_in_bins = 550351
+bin_percentage(): mask_volume = 2402689
+computing bin_percentage
+bin_percentage(): volume_in_bins = 0
+bin_percentage(): mask_volume = 2402689
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.4212270635493248
+computing bin_percentage
+bin_percentage(): volume_in_bins = 2776
+bin_percentage(): mask_volume = 2402689
+computing bin_percentage
+bin_percentage(): volume_in_bins = 508378
+bin_percentage(): mask_volume = 2402689
+computing bin_percentage
+bin_percentage(): volume_in_bins = 0
+bin_percentage(): mask_volume = 2402689
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.8342431577611533
+Processing split cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40.nii
+Reading #1 from cohort/PIm0025/mask_vent_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/mask_vent_mutated_affine_resized_warped__ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.mask_vent to its intersection with the current split (cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40.nii)
+Reading #1 from cohort/PIm0025/image_gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_gas_binned_mutated_affine_resized_warped__ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_gas_binned to its intersection with the current split (cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40.nii)
+Reading #1 from cohort/PIm0025/image_rbc2gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_rbc2gas_binned_mutated_affine_resized_warped__ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_rbc2gas_binned to its intersection with the current split (cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40.nii)
+Reading #1 from cohort/PIm0025/image_rbc2gas_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_rbc2gas_mutated_affine_resized_warped__ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_rbc2gas to its intersection with the current split (cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40.nii)
+Reading #1 from cohort/PIm0025/image_membrane2gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_membrane2gas_binned_mutated_affine_resized_warped__ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_membrane2gas_binned to its intersection with the current split (cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40.nii)
+Reading #1 from cohort/PIm0025/image_membrane2gas_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_membrane2gas_mutated_affine_resized_warped__ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_membrane2gas to its intersection with the current split (cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_40.nii)
+computing bin_percentage
+bin_percentage(): volume_in_bins = 8968
+bin_percentage(): mask_volume = 4271479
+computing bin_percentage
+bin_percentage(): volume_in_bins = 234266
+bin_percentage(): mask_volume = 4271479
+computing bin_percentage
+bin_percentage(): volume_in_bins = 781024
+bin_percentage(): mask_volume = 4271479
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.7419587917246794
+computing bin_percentage
+bin_percentage(): volume_in_bins = 44517
+bin_percentage(): mask_volume = 4224359
+computing bin_percentage
+bin_percentage(): volume_in_bins = 525409
+bin_percentage(): mask_volume = 4224359
+computing bin_percentage
+bin_percentage(): volume_in_bins = 415
+bin_percentage(): mask_volume = 4224359
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.15725522203374132
+computing bin_percentage
+bin_percentage(): volume_in_bins = 2049
+bin_percentage(): mask_volume = 4224359
+computing bin_percentage
+bin_percentage(): volume_in_bins = 887017
+bin_percentage(): mask_volume = 4224359
+computing bin_percentage
+bin_percentage(): volume_in_bins = 0
+bin_percentage(): mask_volume = 4224359
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.2697453478892348
+Processing split cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50.nii
+Reading #1 from cohort/PIm0025/mask_vent_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/mask_vent_mutated_affine_resized_warped__ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.mask_vent to its intersection with the current split (cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50.nii)
+Reading #1 from cohort/PIm0025/image_gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_gas_binned_mutated_affine_resized_warped__ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_gas_binned to its intersection with the current split (cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50.nii)
+Reading #1 from cohort/PIm0025/image_rbc2gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_rbc2gas_binned_mutated_affine_resized_warped__ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_rbc2gas_binned to its intersection with the current split (cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50.nii)
+Reading #1 from cohort/PIm0025/image_rbc2gas_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_rbc2gas_mutated_affine_resized_warped__ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_rbc2gas to its intersection with the current split (cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50.nii)
+Reading #1 from cohort/PIm0025/image_membrane2gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_membrane2gas_binned_mutated_affine_resized_warped__ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_membrane2gas_binned to its intersection with the current split (cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50.nii)
+Reading #1 from cohort/PIm0025/image_membrane2gas_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_membrane2gas_mutated_affine_resized_warped__ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_membrane2gas to its intersection with the current split (cohort/PIm0025/ct_corepeel_mask_neg_affine_mod_x_y_z_split_PI_50.nii)
+computing bin_percentage
+bin_percentage(): volume_in_bins = 16119
+bin_percentage(): mask_volume = 5405060
+computing bin_percentage
+bin_percentage(): volume_in_bins = 465352
+bin_percentage(): mask_volume = 5405060
+computing bin_percentage
+bin_percentage(): volume_in_bins = 605376
+bin_percentage(): mask_volume = 5405060
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.6219990878513411
+computing bin_percentage
+bin_percentage(): volume_in_bins = 311300
+bin_percentage(): mask_volume = 4977346
+computing bin_percentage
+bin_percentage(): volume_in_bins = 1371119
+bin_percentage(): mask_volume = 4977346
+computing bin_percentage
+bin_percentage(): volume_in_bins = 461
+bin_percentage(): mask_volume = 4977346
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.15009864834420705
+computing bin_percentage
+bin_percentage(): volume_in_bins = 34276
+bin_percentage(): mask_volume = 4977346
+computing bin_percentage
+bin_percentage(): volume_in_bins = 1144866
+bin_percentage(): mask_volume = 4977346
+computing bin_percentage
+bin_percentage(): volume_in_bins = 0
+bin_percentage(): mask_volume = 4977346
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.33022584098988
+Processing split cohort/PIm0025/CT_mask_neg_affine_homogenized.nii
+Reading #1 from cohort/PIm0025/mask_vent_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_mask_neg_affine_homogenized.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/mask_vent_mutated_affine_resized_warped__CT_mask_neg_affine_homogenized_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.mask_vent to its intersection with the current split (cohort/PIm0025/CT_mask_neg_affine_homogenized.nii)
+Reading #1 from cohort/PIm0025/image_gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_mask_neg_affine_homogenized.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_gas_binned_mutated_affine_resized_warped__CT_mask_neg_affine_homogenized_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_gas_binned to its intersection with the current split (cohort/PIm0025/CT_mask_neg_affine_homogenized.nii)
+Reading #1 from cohort/PIm0025/image_rbc2gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_mask_neg_affine_homogenized.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_rbc2gas_binned_mutated_affine_resized_warped__CT_mask_neg_affine_homogenized_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_rbc2gas_binned to its intersection with the current split (cohort/PIm0025/CT_mask_neg_affine_homogenized.nii)
+Reading #1 from cohort/PIm0025/image_rbc2gas_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_mask_neg_affine_homogenized.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_rbc2gas_mutated_affine_resized_warped__CT_mask_neg_affine_homogenized_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_rbc2gas to its intersection with the current split (cohort/PIm0025/CT_mask_neg_affine_homogenized.nii)
+Reading #1 from cohort/PIm0025/image_membrane2gas_binned_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_mask_neg_affine_homogenized.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_membrane2gas_binned_mutated_affine_resized_warped__CT_mask_neg_affine_homogenized_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_membrane2gas_binned to its intersection with the current split (cohort/PIm0025/CT_mask_neg_affine_homogenized.nii)
+Reading #1 from cohort/PIm0025/image_membrane2gas_mutated_affine_resized_warped.nii
+Reading #2 from cohort/PIm0025/CT_mask_neg_affine_homogenized.nii
+Multiplying #2 and #1
+Writing #1 to file cohort/PIm0025/image_membrane2gas_mutated_affine_resized_warped__CT_mask_neg_affine_homogenized_product.nii
+  Output voxel type: float[f]
+  Rounding off: Disabled
+stats.py: Set subject.image_membrane2gas to its intersection with the current split (cohort/PIm0025/CT_mask_neg_affine_homogenized.nii)
+computing bin_percentage
+bin_percentage(): volume_in_bins = 25087
+bin_percentage(): mask_volume = 9676539
+computing bin_percentage
+bin_percentage(): volume_in_bins = 699618
+bin_percentage(): mask_volume = 9676539
+computing bin_percentage
+bin_percentage(): volume_in_bins = 1386400
+bin_percentage(): mask_volume = 9676539
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.6788695135570588
+computing bin_percentage
+bin_percentage(): volume_in_bins = 355817
+bin_percentage(): mask_volume = 9201705
+computing bin_percentage
+bin_percentage(): volume_in_bins = 1896528
+bin_percentage(): mask_volume = 9201705
+computing bin_percentage
+bin_percentage(): volume_in_bins = 876
+bin_percentage(): mask_volume = 9201705
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.0034286494677347834
+computing bin_percentage
+bin_percentage(): volume_in_bins = 36325
+bin_percentage(): mask_volume = 9201705
+computing bin_percentage
+bin_percentage(): volume_in_bins = 2031883
+bin_percentage(): mask_volume = 9201705
+computing bin_percentage
+bin_percentage(): volume_in_bins = 0
+bin_percentage(): mask_volume = 9201705
+computing mean
+mean(): image.shape = (512, 512, 396)
+mean(): mask.shape = (512, 512, 396)
+Computed mean: 0.006668383204991043

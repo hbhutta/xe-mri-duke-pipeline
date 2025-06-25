@@ -1,25 +1,27 @@
-try:
-    from utils.os_utils import get_subdirs, get_common_files
-except ImportError as e:
-    print(f"An error occurred: {e}")
-import sys
+# try:
+#     from utils.os_utils import get_subdirs, get_common_files
+# except ImportError as e:
+#     print(f"An error occurred: {e}")
+# import sys
 import ants
 import pickle
 import os
 from time import time
+from sys import argv
+
 
 start_time = time()
 
-patients = [os.path.join("cohort/PIm0015")]
+patients = [argv[1]]
 
 imgs = [
-    [os.path.join(patient, "mask_reg_edited_mutated_affine_resized.nii") for patient in patients],
+#    [os.path.join(patient, "mask_reg_edited_mutated_affine_resized.nii") for patient in patients],
     [os.path.join(patient, "image_gas_highreso_mutated_affine_resized.nii") for patient in patients],
     [os.path.join(patient, "image_gas_binned_mutated_affine_resized.nii") for patient in patients],
     [os.path.join(patient, "image_gas_cor_mutated_affine_resized.nii") for patient in patients],
     [os.path.join(patient, "image_rbc2gas_binned_mutated_affine_resized.nii") for patient in patients],
     [os.path.join(patient, "image_rbc2gas_mutated_affine_resized.nii") for patient in patients],
-    [os.path.join(patient, "mask_vent_mutated_affine_resized.nii") for patient in patients],
+#    [os.path.join(patient, "mask_vent_mutated_affine_resized.nii") for patient in patients],
     [os.path.join(patient, "image_membrane_mutated_affine_resized.nii") for patient in patients],
     [os.path.join(patient, "image_membrane2gas_binned_mutated_affine_resized.nii") for patient in patients],
     [os.path.join(patient, "image_membrane2gas_mutated_affine_resized.nii") for patient in patients],
@@ -84,17 +86,17 @@ def warp_image(fixed, moving, transform_list, interpolation='linear'):
     if interpolation in ['nearestNeighbor', 'multiLabel', 'genericLabel']:
         trans[trans < 1] = 0
         
-    assert trans != None
+    assert trans is not None
     ants.image_write(image=trans, filename=moving[:-4] + "_warped.nii")
 
 
-with open(f"cohort/PIm0015/PIm0015_reg.pkl", "rb") as file:
+PATIENT = patients[0]
+with open(f"{PATIENT}/{os.path.basename(PATIENT)}_reg.pkl", "rb") as file:
     mytx = pickle.load(file)
 
-
 for img in mri_img_paths:
-    warp_image(fixed=os.path.join(os.path.dirname(img),
-        "CT_mask_neg_affine.nii"), moving=img,
-        transform_list=mytx['fwdtransforms'])
-
+    if (not os.path.isfile(img[:-4] + "_warped.nii")):
+        warp_image(fixed=os.path.join(os.path.dirname(img), "CT_mask_neg_affine.nii"), moving=img, transform_list=mytx['fwdtransforms'])
+    else:
+        print(f"File {img} already warped")
 
