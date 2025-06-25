@@ -42,7 +42,7 @@ def apply_fwdtranforms(ANTS_CT, ANTS_Vent, transformlist):
     return trans
 
 
-def warp_image(fixed, moving, transform_list, interpolation='linear'):
+def warp_image(fixed, moving, transform_list, interpolation='multiLabel'):
     '''
     Use transforms from registration process to warp an image to target.  For example, if you register the ventilation mask to the CT mask,
     you can use the transforms to warp the ventilation intensity image to the CT space.    
