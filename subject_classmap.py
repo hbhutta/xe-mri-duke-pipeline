@@ -1023,28 +1023,30 @@ class Subject(object):
                 f"{self.config.data_dir}/image_proton_reg.nii",
                 self.dict_dis[constants.IOFields.FOV],
             ),
-        io_utils.export_nii_4d(
-            plot.map_and_overlay_to_rgb(
-                self.image_rbc2gas_binned, proton_reg, constants.CMAP.RBC_BIN2COLOR
-            ),
-            f"{self.config.data_dir}/image_rbc2gas_binned_rgb.nii",
-        )
-        io_utils.export_nii_4d(
-            plot.map_and_overlay_to_rgb(
-                self.image_membrane2gas_binned,
-                proton_reg,
-                constants.CMAP.MEMBRANE_BIN2COLOR,
-            ),
-            f"{self.config.data_dir}/image_membrane2gas_binned_rgb.nii",
-        )
-        io_utils.export_nii_4d(
-            plot.map_and_overlay_to_rgb(
-                self.image_gas_binned,
-                proton_reg,
-                constants.CMAP.VENT_BIN2COLOR,
-            ),
-            f"{self.config.data_dir}/image_gas_binned_rgb.nii",
-        )
+            
+        # Haad: These images are not necessary for computing stats, so I am temporarily comment them out
+        # io_utils.export_nii_4d(
+        #     plot.map_and_overlay_to_rgb(
+        #         self.image_rbc2gas_binned, proton_reg, constants.CMAP.RBC_BIN2COLOR
+        #     ),
+        #     f"{self.config.data_dir}/image_rbc2gas_binned_rgb.nii",
+        # )
+        # io_utils.export_nii_4d(
+        #     plot.map_and_overlay_to_rgb(
+        #         self.image_membrane2gas_binned,
+        #         proton_reg,
+        #         constants.CMAP.MEMBRANE_BIN2COLOR,
+        #     ),
+        #     f"{self.config.data_dir}/image_membrane2gas_binned_rgb.nii",
+        # )
+        # io_utils.export_nii_4d(
+        #     plot.map_and_overlay_to_rgb(
+        #         self.image_gas_binned,
+        #         proton_reg,
+        #         constants.CMAP.VENT_BIN2COLOR,
+        #     ),
+        #     f"{self.config.data_dir}/image_gas_binned_rgb.nii",
+        # )
 
     def save_config_as_json(self):
         """Save subject config .py file as json."""
