@@ -19,6 +19,11 @@ imgs = [
     [os.path.join(patient, "image_membrane2gas_binned_mutated_affine.nii") for patient in patients],
     [os.path.join(patient, "image_membrane2gas_mutated_affine.nii") for patient in patients],
     [os.path.join(patient, "image_gas_binned_mutated_affine.nii") for patient in patients],
+    
+    # Haad: We need to apply fwdtransforms to these reoriented RGB images later, so they need to be resized
+    [os.path.join(patient, "image_gas_binned_rgb_mutated_affine.nii") for patient in patients],
+    [os.path.join(patient, "image_membrane2gas_binned_rgb_mutated_affine.nii") for patient in patients],
+    [os.path.join(patient, "image_rbc2gas_binned_rgb_mutated_affine.nii") for patient in patients],
 ]
 
 mri_img_paths = []

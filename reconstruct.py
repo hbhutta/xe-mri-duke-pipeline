@@ -19,15 +19,10 @@ flags.DEFINE_boolean(name="force_recon",
                      help="force reconstruction for the subject")
 
 flags.DEFINE_string(name="patient_path",
-                    default=None, # assuming that this is where .dat files are stored by default
+                    default=None,                     
                     help="The folder where the .dat files are stored",
                     required=True)
 
-#flags.DEFINE_string(name="msfp",
-#                    default=None, # assuming that this is where .dat files are stored by default
-#                    help="Manual segmentation file path",
-#                    required=True)
-#
 flags.DEFINE_float(name="rbc_m_ratio",
                     default=None, 
                     help="The RBC:M ratio, calculated through a separate Matlab script",
@@ -88,15 +83,18 @@ def gx_mapping_reconstruction(config: base_config.Config):
         
         subject.segmentation() 
         
-        subject.registration()
+        # Haad: Binning should occur before registration
+        
+        subject.registration() # preliminary registration
         subject.biasfield_correction() 
         subject.gas_binning() 
         subject.dixon_decomposition() 
         subject.hb_correction()
         subject.dissolved_analysis()
         subject.dissolved_binning()
-        
-        subject.save_files()
+       
+        # Haad: Saves the files post recon, registration and binning 
+        subject.save_files() 
     
         # dict_dis is being created because it contains information needed in computing stats   
         with open(f'{subject.config.data_dir}/dict_dis.pkl', 'wb') as f:  # open a text file

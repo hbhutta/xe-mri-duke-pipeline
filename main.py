@@ -82,7 +82,7 @@ def gx_mapping_reconstruction(config: base_config.Config):
 
     subject.segmentation()
 
-
+    # 19 total step
     subject.registration()
     subject.biasfield_correction()
     subject.gas_binning()

@@ -1,7 +1,5 @@
-from utils.os_utils import get_subdirs, get_common_files
 import os
 from glob import glob
-import nibabel as nib
 from sys import argv
 import pickle
 import ants

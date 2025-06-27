@@ -1,0 +1,61 @@
+2025-06-27 16:48:36.391389: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-06-27 16:48:36.700288: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home/hbhutta/miniconda3/envs/xe-mri/lib/python3.8/site-packages/cv2/../../lib64:
+2025-06-27 16:48:36.700333: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2025-06-27 16:48:36.751566: E tensorflow/stream_executor/cuda/cuda_blas.cc:2981] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-06-27 16:48:37.549820: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer.so.7'; dlerror: libnvinfer.so.7: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home/hbhutta/miniconda3/envs/xe-mri/lib/python3.8/site-packages/cv2/../../lib64:
+2025-06-27 16:48:37.549945: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer_plugin.so.7'; dlerror: libnvinfer_plugin.so.7: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home/hbhutta/miniconda3/envs/xe-mri/lib/python3.8/site-packages/cv2/../../lib64:
+2025-06-27 16:48:37.549957: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
+WARNING:tensorflow:From /home/hbhutta/miniconda3/envs/xe-mri/lib/python3.8/site-packages/tensorflow/python/compat/v2_compat.py:107: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
+Instructions for updating:
+non-resource variables are not supported in the long term
+/home/hbhutta/miniconda3/envs/xe-mri/lib/python3.8/site-packages/keras/optimizers/optimizer_v2/adam.py:114: UserWarning: The `lr` argument is deprecated, use `learning_rate` instead.
+  super().__init__(name, **kwargs)
+/data/Haad/xe-mri-rachel/xenon-gas-exchange-consortium-main_james_version/utils/metrics.py:4: DeprecationWarning: Please use `binary_dilation` from the `scipy.ndimage` namespace, the `scipy.ndimage.morphology` namespace is deprecated.
+  from scipy.ndimage.morphology import binary_dilation
+2025-06-27 16:48:38.381383: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /home/hbhutta/miniconda3/envs/xe-mri/lib/python3.8/site-packages/cv2/../../lib64:
+2025-06-27 16:48:38.381432: W tensorflow/stream_executor/cuda/cuda_driver.cc:263] failed call to cuInit: UNKNOWN ERROR (303)
+2025-06-27 16:48:38.381451: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (epyc02): /proc/driver/nvidia/version does not exist
+reconstruct.py: in main()
+reconstruct.py got data_dir: cohort/PIm0328
+reconstruct.py got rbc_m_ratio: 0.373
+reconstruct.py got manual_seg_filepath: cohort/PIm0328/mask_reg_edited.nii
+force_recon: True
+config.processes.gx_mapping_recon: True
+
+
+
+I0627 16:48:38.382052 139974446942016 subject_classmap.py:74] Initializing gas exchange imaging subject.
+pymapVBVD version 0.4.8
+Software version: VD
+Scan 1/1, read all mdhs:   0%|          | 0.00/2.84M [00:00<?, ?B/s]                                                                    read data:   0%|          | 0/2030 [00:00<?, ?it/s]                                                   I0627 16:48:38.795798 139974446942016 twix_utils.py:467] Reading in 'normal' dixon data on Siemens Prisma w/ bonus.
+pymapVBVD version 0.4.8
+Software version: VD
+Scan 1/1, read all mdhs:   0%|          | 0.00/3.24M [00:00<?, ?B/s]                                                                    read data:   0%|          | 0/520 [00:00<?, ?it/s]                                                  pymapVBVD version 0.4.8
+Software version: VD
+Scan 1/2, read all mdhs:   0%|          | 0.00/2.98M [00:00<?, ?B/s]                                                                    Scan 2/2, read all mdhs:   0%|          | 0.00/6.87M [00:00<?, ?B/s]Scan 2/2, read all mdhs: 7.71MB [00:00, 80.8MB/s]                                                                    read data:   0%|          | 0/4600 [00:00<?, ?it/s]read data:  49%|████▉     | 2249/4600 [00:00<00:00, 22483.48it/s]read data:  98%|█████████▊| 4518/4600 [00:00<00:00, 22602.93it/s]                                                                 I0627 16:48:40.152392 139974446942016 subject_classmap.py:185] Using manual RBC:M ratio of 0.373
+I0627 16:48:40.152558 139974446942016 reconstruct.py:76] Reconstructing images
+I0627 16:48:40.349200 139974446942016 system_model.py:120] Calculating Matrix interpolation coefficients...
+I0627 16:48:40.349415 139974446942016 proximity.py:103] Calculating L2 distances ...
+I0627 16:48:42.656646 139974446942016 proximity.py:127] Finished Calculating L2 distances.
+I0627 16:48:42.656849 139974446942016 proximity.py:128] Applying L2 bound ...
+Traceback (most recent call last):
+  File "reconstruct.py", line 132, in <module>
+    app.run(main)
+  File "/home/hbhutta/miniconda3/envs/xe-mri/lib/python3.8/site-packages/absl/app.py", line 308, in run
+    _run_main(main, args)
+  File "/home/hbhutta/miniconda3/envs/xe-mri/lib/python3.8/site-packages/absl/app.py", line 254, in _run_main
+    sys.exit(main(argv))
+  File "reconstruct.py", line 127, in main
+    gx_mapping_reconstruction(config=config)
+  File "reconstruct.py", line 78, in gx_mapping_reconstruction
+    subject.reconstruction_gas()
+  File "/data/Haad/xe-mri-rachel/xenon-gas-exchange-consortium-main_james_version/subject_classmap.py", line 307, in reconstruction_gas
+    self.image_gas_highsnr = reconstruction.reconstruct(
+  File "/data/Haad/xe-mri-rachel/xenon-gas-exchange-consortium-main_james_version/reconstruction.py", line 48, in reconstruct
+    system_obj = system_model.MatrixSystemModel(
+  File "/data/Haad/xe-mri-rachel/xenon-gas-exchange-consortium-main_james_version/recon/system_model.py", line 122, in __init__
+    sample_idx, voxel_idx, kernel_vals = self.proximity_obj.evaluate(
+  File "/data/Haad/xe-mri-rachel/xenon-gas-exchange-consortium-main_james_version/recon/proximity.py", line 132, in evaluate
+    voxel_idx = voxel_idx[keep_values]
+KeyboardInterrupt
