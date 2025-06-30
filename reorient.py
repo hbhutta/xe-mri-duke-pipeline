@@ -1,119 +1,98 @@
-from utils.os_utils import aff2axcodes_RAS
+# from utils.os_utils import aff2axcodes_RAS
 import os
 import nibabel as nib
-from time import time
 import sys
 import numpy as np
-
-prep_start_time = time()
-
-# import sys
 
 if len(sys.argv) < 2:
     print("Usage: python reorient.py <patient_dir>")
     sys.exit(1)
 
-BASE_DIR = sys.argv[1]
-
-patients = [BASE_DIR]
+PATIENT_DIR = sys.argv[1]
+patient = PATIENT_DIR
 
 # these cts will not be warped or resized, only reoriented
-cts = [
-    [os.path.join(patient, "CT_mask.nii") for patient in patients],
-    [os.path.join(patient, "CT_lobe_mask.nii") for patient in patients],
-    [os.path.join(patient, "ct_corepeel_mask.nii") for patient in patients],
+ct_mask_paths = [
+    os.path.join(patient, "CT_mask.nii"),
+    os.path.join(patient, "CT_lobe_mask.nii"),
+    os.path.join(patient, "ct_corepeel_mask.nii"),
 ]
-
-ct_mask_img_paths = []
-for ct in cts:
-    ct_mask_img_paths += ct
-
-print(ct_mask_img_paths)
-
-imgs = [
-    [os.path.join(patient, "mask_reg_edited.nii") for patient in patients],
-    [os.path.join(patient, "image_gas_highreso.nii") for patient in patients],
-    [os.path.join(patient, "image_gas_binned.nii") for patient in patients],
-    [os.path.join(patient, "image_gas_cor.nii") for patient in patients],
-    [os.path.join(patient, "image_rbc2gas_binned.nii") for patient in patients],
-    [os.path.join(patient, "image_rbc2gas.nii") for patient in patients],
-    [os.path.join(patient, "mask_vent.nii") for patient in patients],
-    [os.path.join(patient, "image_membrane.nii") for patient in patients],
-    [os.path.join(patient, "image_membrane2gas_binned.nii") for patient in patients],
-    [os.path.join(patient, "image_membrane2gas.nii") for patient in patients],
-    [os.path.join(patient, "image_gas_binned.nii") for patient in patients],
-    
-    # Haad: We need to apply fwdtransforms to RGB images later, so they need to be preprocessed (i.e. resized and reoriented)
-    [os.path.join(patient, "image_gas_binned_rgb.nii") for patient in patients],
-    [os.path.join(patient, "image_membrane2gas_binned_rgb.nii") for patient in patients],
-    [os.path.join(patient, "image_rbc2gas_binned_rgb.nii") for patient in patients],
-]
-
-mri_img_paths = []
-for arr in imgs:
-    mri_img_paths += arr
-
-print(mri_img_paths)
-
-# gas_file_paths = [os.path.join(patient, "gas_binned.nii") for patient in patient_paths]
-# mem_file_paths = [os.path.join(patient, "membranegas_binned.nii") for patient in patient_paths]
-# rbc_file_paths = [os.path.join(patient, "rbc2gas_binned.nii") for patient in patient_paths]
-
-# assert len(ct_mask_file_paths) == len(patient_paths)
-# assert len(mri_file_paths) == len(patient_paths)
-
+   
+# Skip reorienting CTs if they are already reoriented 
+are_cts_reoriented = True
+for ct in ct_mask_paths:
+    if (not os.path.isfile(ct[:-4] + "_neg_affine.nii")):
+        are_cts_reoriented = False
+        print(f"File {ct} does not exist. Will redo reorientation of CT masks.")
+        break
 
 """
 Reorient CT mask (CT_mask.nii) 
 """
-for ct_mask_file in ct_mask_img_paths:
-    print(f"reorient.py: Reorienting patient {os.path.dirname(ct_mask_file)} CT mask")
-    print(ct_mask_file)
+if (not are_cts_reoriented):
+    for ct_mask_file in ct_mask_paths:
+        print(f"reorient.py: Reorienting patient {os.path.dirname(ct_mask_file)} CT mask")
+        # print(ct_mask_file)
 
-    nib_ct = nib.load(ct_mask_file)
+        nib_ct = nib.load(ct_mask_file)
 
-    aff = nib_ct.affine
-    for i in range(3):
-        if aff[i][i] > 0:
-            aff[i][i] = -aff[i][i]
+        aff = nib_ct.affine
+        for i in range(3):
+            if aff[i][i] > 0:
+                aff[i][i] = -aff[i][i]
 
-    nib_ct.set_qform(aff)
-    path = ct_mask_file[:-4] + "_neg_affine.nii"
-    if not os.path.exists(path):
-        nib.save(img=nib_ct, filename=path)
-        print(f"Saved to {path}!")
-        print(aff2axcodes_RAS(nib_ct.affine))
+        nib_ct.set_qform(aff)
+        path = ct_mask_file[:-4] + "_neg_affine.nii"
+        if not os.path.exists(path):
+            nib.save(img=nib_ct, filename=path)
+            # print(f"Saved to {path}!")
+            # print(aff2axcodes_RAS(nib_ct.affine))
 
-    else:
-        print(f"File {path} already exists.")
-print("done ct reorienting")
-# assert 0 == 1
+        else:
+            print(f"File {path} already exists.")
+        
+mri_type_image_paths = [
+    os.path.join(patient, "mask_reg_edited.nii"),
+    os.path.join(patient, "image_gas_highreso.nii"),
+    os.path.join(patient, "image_gas_binned.nii"),
+    os.path.join(patient, "image_gas_cor.nii"),
+    os.path.join(patient, "image_rbc2gas_binned.nii"),
+    os.path.join(patient, "image_rbc2gas.nii"),
+    os.path.join(patient, "mask_vent.nii"),
+    os.path.join(patient, "image_membrane.nii"),
+    os.path.join(patient, "image_membrane2gas_binned.nii"),
+    os.path.join(patient, "image_membrane2gas.nii"),
+    os.path.join(patient, "image_gas_binned.nii"),
+]
+    
+are_mri_reoriented = True
+for mri in mri_type_image_paths:
+    if (not os.path.isfile(mri[:-4] + "_mutated_affine.nii")):
+        are_mri_reoriented = False
+        print(f"File {mri} does not exist. Will redo MRI reorientation MRI type images.")
+        break
+    
+
 
 """
-Reorient MRI (mask_reg_edited_scaled.nii) and Ventilation (gas_highreso_scaled.nii)
+Reorient MRI (mask_reg_edited_scaled.nii) and ventilation (gas_highreso_scaled.nii)
 """
-for mri_file in mri_img_paths:
-    print(
-        f"reorient.py: Reorienting patient {os.path.dirname(mri_file)} ventilation and MRI"
-    )
+if (not are_mri_reoriented):
+    for mri_file in mri_type_image_paths:
+        print(
+            f"reorient.py: Reorienting patient {os.path.dirname(mri_file)} ventilation and MRI"
+        )
 
-    print(mri_file)
+        # print(mri_file)
+        nib_mr = nib.load(mri_file)
+        new_aff = np.array([[0, -1, 0, 0], [0, 0, -1, 0], [-1, 0, 0, 0], [0, 0, 0, 1]])
+        nib_mr.set_qform(new_aff)
+        mr_path = mri_file[:-4] + "_mutated_affine.nii"
 
-    nib_mr = nib.load(mri_file)
-
-    new_aff = np.array([[0, -1, 0, 0], [0, 0, -1, 0], [-1, 0, 0, 0], [0, 0, 0, 1]])
-
-    nib_mr.set_qform(new_aff)
-
-    mr_path = mri_file[:-4] + "_mutated_affine.nii"
-
-    # MRI
-    if not os.path.exists(mr_path):
-        nib.save(img=nib_mr, filename=mr_path)
-        print(f"Saved to {mr_path}!")
-        print(aff2axcodes_RAS(nib_mr.affine))
-    else:
-        print(f"File {mr_path} already exists.")
-
-prep_end_time = time()
-print(f"That took: {prep_end_time - prep_start_time} min/sec")
+        # MRI
+        if not os.path.exists(mr_path):
+            nib.save(img=nib_mr, filename=mr_path)
+            # print(f"Saved to {mr_path}!")
+            # print(aff2axcodes_RAS(nib_mr.affine))
+        else:
+            print(f"File {mr_path} already exists.")

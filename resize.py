@@ -1,37 +1,7 @@
 import nibabel as nib 
 import os
 import ants 
-from utils.os_utils import get_common_files, get_subdirs, aff2axcodes_RAS
 from sys import argv
-patients = [argv[1]] # patient path
-# get_subdirs(BASE_DIR) # [os.path.join("cohort/PIm0015")]
-
-# This script assumes the following files exist:
-imgs = [
-   [os.path.join(patient, "mask_reg_edited_mutated_affine.nii") for patient in patients],
-    [os.path.join(patient, "image_gas_highreso_mutated_affine.nii") for patient in patients],
-    [os.path.join(patient, "image_gas_binned_mutated_affine.nii") for patient in patients],
-    [os.path.join(patient, "image_gas_cor_mutated_affine.nii") for patient in patients],
-    [os.path.join(patient, "image_rbc2gas_binned_mutated_affine.nii") for patient in patients],
-    [os.path.join(patient, "image_rbc2gas_mutated_affine.nii") for patient in patients],
-    [os.path.join(patient, "mask_vent_mutated_affine.nii") for patient in patients],
-    [os.path.join(patient, "image_membrane_mutated_affine.nii") for patient in patients],
-    [os.path.join(patient, "image_membrane2gas_binned_mutated_affine.nii") for patient in patients],
-    [os.path.join(patient, "image_membrane2gas_mutated_affine.nii") for patient in patients],
-    [os.path.join(patient, "image_gas_binned_mutated_affine.nii") for patient in patients],
-    
-    # Haad: We need to apply fwdtransforms to these reoriented RGB images later, so they need to be resized
-    [os.path.join(patient, "image_gas_binned_rgb_mutated_affine.nii") for patient in patients],
-    [os.path.join(patient, "image_membrane2gas_binned_rgb_mutated_affine.nii") for patient in patients],
-    [os.path.join(patient, "image_rbc2gas_binned_rgb_mutated_affine.nii") for patient in patients],
-]
-
-mri_img_paths = []
-for arr in imgs:
-    mri_img_paths += arr
-
-print(mri_img_paths)
-
 
 def resize(path: str, ref: str):
     nib_res = nib.load(path)
@@ -42,7 +12,6 @@ def resize(path: str, ref: str):
     pz = nib_ref.header["pixdim"][3]
     
     img_to_resize = ants.image_read(filename=path)
-
     resampled = ants.resample_image(image=img_to_resize, resample_params=(512, 512, 512), use_voxels=True)
 
     resized_fname = path[:-4] + "_resized.nii"
@@ -56,16 +25,45 @@ def resize(path: str, ref: str):
     os.remove(resized_fname)
     os.rename(new_fname, resized_fname)
 
-#resize("cohort/PIm0015/image_rbc2gas_binned_mutated_affine.nii", "cohort/PIm0015/CT_mask_neg_affine.nii")    
 
-print(f"resize.py: Processing patient {patients[0]}")
-for img in mri_img_paths:
-    print(f"Resizing image {img}")
+if len(argv) < 2:
+    print("Usage: python resize.py <patient_path>")
+    exit(1)
+    
+patient_path = argv[1] # patient path
+
+# This script assumes the following files exist:
+mri_type_image_paths = [
+   os.path.join(patient_path, "mask_reg_edited_mutated_affine.nii"),
+    os.path.join(patient_path, "image_gas_highreso_mutated_affine.nii"),
+    os.path.join(patient_path, "image_gas_binned_mutated_affine.nii"),
+    os.path.join(patient_path, "image_gas_cor_mutated_affine.nii"),
+    os.path.join(patient_path, "image_rbc2gas_binned_mutated_affine.nii"),
+    os.path.join(patient_path, "image_rbc2gas_mutated_affine.nii"),
+    os.path.join(patient_path, "mask_vent_mutated_affine.nii"),
+    os.path.join(patient_path, "image_membrane_mutated_affine.nii"),
+    os.path.join(patient_path, "image_membrane2gas_binned_mutated_affine.nii"),
+    os.path.join(patient_path, "image_membrane2gas_mutated_affine.nii"),
+    os.path.join(patient_path, "image_gas_binned_mutated_affine.nii"),
+]
+
+are_mris_resized = True
+for img in mri_type_image_paths:
     if (not os.path.isfile(img[:-4] + "_resized.nii")):
-        resize(img, os.path.join(os.path.dirname(img),
-            "CT_mask_neg_affine.nii"))     
-    else:
-        print(f"File {img} already resized")
+        are_mris_resized = False
+        print(f"File {img} does not exist. Will redo resizing of all MRI images.")
+        break
 
+if (not are_mris_resized):
+    print(f"resize.py: Resizing MRI images for patient {patient_path}")
+    for img in mri_type_image_paths:
+        print(f"Resizing image {img}")
+        if (not os.path.isfile(img[:-4] + "_resized.nii")):
+            resize(img, os.path.join(os.path.dirname(img),
+                "CT_mask_neg_affine.nii"))     
+        else:
+            print(f"File {img} already resized")
+else:
+    print("All MRI images already resized for patient {patient_path}. No resizing needed.") 
 
 

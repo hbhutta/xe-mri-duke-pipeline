@@ -1,9 +1,8 @@
 """Scripts to run gas exchange mapping pipeline."""
 import logging
 import pickle
-# import json
 import os 
-
+from time import sleep
 from absl import app, flags
 from ml_collections import config_flags
 
@@ -19,10 +18,15 @@ flags.DEFINE_boolean(name="force_recon",
                      help="force reconstruction for the subject")
 
 flags.DEFINE_string(name="patient_path",
-                    default=None,                     
+                    default=None, # assuming that this is where .dat files are stored by default
                     help="The folder where the .dat files are stored",
                     required=True)
 
+#flags.DEFINE_string(name="msfp",
+#                    default=None, # assuming that this is where .dat files are stored by default
+#                    help="Manual segmentation file path",
+#                    required=True)
+#
 flags.DEFINE_float(name="rbc_m_ratio",
                     default=None, 
                     help="The RBC:M ratio, calculated through a separate Matlab script",
@@ -69,6 +73,8 @@ def gx_mapping_reconstruction(config: base_config.Config):
     for img in img_paths:
         if (not os.path.isfile(img)):
             are_files_reconstructed = False
+            logging.info(f"File {img} does not exist. Will redo reconstruction.")
+            sleep(10) 
             break
 
     if (not are_files_reconstructed):
@@ -80,27 +86,28 @@ def gx_mapping_reconstruction(config: base_config.Config):
     
         if config.recon.recon_proton:
             subject.reconstruction_ute()
-        
+       
+        # self.mask is set to mask_reg_edited here
         subject.segmentation() 
         
-        # Haad: Binning should occur before registration
-        
-        subject.registration() # preliminary registration
+        subject.registration()
         subject.biasfield_correction() 
         subject.gas_binning() 
         subject.dixon_decomposition() 
         subject.hb_correction()
         subject.dissolved_analysis()
         subject.dissolved_binning()
-       
-        # Haad: Saves the files post recon, registration and binning 
-        subject.save_files() 
+        
+        subject.save_files()
     
         # dict_dis is being created because it contains information needed in computing stats   
         with open(f'{subject.config.data_dir}/dict_dis.pkl', 'wb') as f:  # open a text file
              pickle.dump(subject.dict_dis, f) # serialize the list
-    
-    logging.info("Complete") 
+
+    if (not are_files_reconstructed):
+        logging.info("Done. No reconstruction occurred.")
+    else: 
+        logging.info("Done. Reconstructed files.")
 
 def main(argv):
     print("reconstruct.py: in main()")
