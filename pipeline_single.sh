@@ -12,12 +12,17 @@ Example usage:
 bash pipeline_single.sh cohort/PIm1234
 '
 
-set -e # This will make sure that this bash script will immediately end if any error occurs
+set -euo pipefail # This will make sure that this bash script will immediately end if any error occurs
 
 patient=$1
 dir_basename=$(basename $patient)
 csv_file=csvs/cohort_rbc_mem_ratios.csv
 rbc_m_ratio=$(awk -F',' -v name="$dir_basename" '$1 == name {print $2}' "$csv_file")
+
+if [[ -f "${patient}/${dir_basename}_stats.csv" ]]; then
+    echo "Pipeline has already been run for patient ${dir_basename}. Skipping."
+    exit 0
+fi
 
 echo "Cleaning up files from previous run for patient ${dir_basename}"
 bash clean_single.sh $patient
