@@ -45,7 +45,7 @@ class Config(config_dict.ConfigDict):
         self.segmentation_key = None # constants.SegmentationKey.CNN_VENT.value
         self.registration_key = constants.RegistrationKey.SKIP.value
         self.bias_key = constants.BiasfieldKey.N4ITK.value
-        self.hb_correction_key = constants.HbCorrectionKey.NONE.value
+        self.hb_correction_key = constants.HbCorrectionKey.RBC_AND_MEMBRANE.value
         self.hb = 0.0
         self.subject_id = "undefined" # "demo"  # "PIm0377"
         self.rbc_m_ratio = 0.0 # 0.575
