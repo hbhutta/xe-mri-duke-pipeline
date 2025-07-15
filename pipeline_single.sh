@@ -19,14 +19,6 @@ dir_basename=$(basename $patient)
 csv_file=csvs/cohort_rbc_mem_ratios.csv
 rbc_m_ratio=$(awk -F',' -v name="$dir_basename" '$1 == name {print $2}' "$csv_file")
 
-# Check if the rbc:membrane ratio is found in the CSV file
-if [[ -z "$rbc_m_ratio" ]]; then
-    echo "ERROR: RBC:Membrane ratio not found for patient ${dir_basename} in ${csv_file}. Exiting."
-    exit 1
-else
-    echo "Recieved rbc:membrane ratio of ${rbc_m_ratio} for patient ${dir_basename}"
-fi
-
 echo "Cleaning up files from previous run for patient ${dir_basename}"
 bash clean_single.sh $patient
 
@@ -41,8 +33,8 @@ echo "Reorientation finished for patient ${dir_basename}, press any key to conti
 python -u resize.py $patient
 echo "Resizing finished for patient ${dir_basename}, press any key to continue"
 
-python register_single.py $patient vent # requires reoriented and resized mask_vent
-python register_single.py $patient reg  # requires reoriented and resized mask_reg_edited
+python register_single.py $patient vent 
+python register_single.py $patient reg  
 
 python -u mod_corepeel.py $patient
 python -u unpack.py $patient
@@ -51,17 +43,8 @@ python -u stats.py --config config/tests/cohort_master_config.py --patient_path 
 echo "Finished computing stats for patient ${dir_basename}."
 echo "Pipeline completed for patient ${dir_basename}"
 
-read -p "Pipeline completed for patient ${dir_basename}... Delete intermediate files? [Y/N]" cleanup
-if [[ $cleanup == "Y" ]]; then
-    echo "Cleaning up intermediate files for patient ${dir_basename}"
-    bash clean_single.sh $patient
-    # Optionally, display patient folder size before and after cleaning up intermdiate files
-elif [[ $cleanup == "N" ]]; then
-    echo "Keeping intermdiate files for patient ${dir_basename}"
-else
-    echo "Invalid option"
-    exit 1
-fi
+echo "Cleaning up intermediate files for patient ${dir_basename}"
+bash clean_single.sh $patient
 
 echo ${dir_basename} >> txt/pipeline_completed.txt
 echo "PIPELINE COMPLETED: The pipeline has successfully completed for patient ${dir_basename} and the patient has been added to txt/pipeline_completed.txt"
