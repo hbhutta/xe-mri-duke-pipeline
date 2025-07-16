@@ -16,13 +16,17 @@ set -euo pipefail # This will make sure that this bash script will immediately e
 
 patient=$1
 dir_basename=$(basename $patient)
-csv_file=csvs/cohort_rbc_mem_ratios.csv
-rbc_m_ratio=$(awk -F',' -v name="$dir_basename" '$1 == name {print $2}' "$csv_file")
 
 if [[ -f "${patient}/${dir_basename}_stats.csv" ]]; then
     echo "Pipeline has already been run for patient ${dir_basename}. Skipping."
     exit 0
 fi
+
+rbc_mem_ratios=csvs/cohort_rbc_mem_ratios.csv
+rbc_m_ratio=$(awk -F',' -v name="$dir_basename" '$1 == name {print $2}' "$rbc_mem_ratios")
+
+hb_correction_values=csvs/cohort_hb_corrections.csv
+hb_correction_value=$(awk -F',' -v name="$dir_basename" '$1 == name {print $2}' "$hb_correction_values")
 
 echo "Cleaning up files from previous run for patient ${dir_basename}"
 bash clean_single.sh $patient
@@ -33,10 +37,10 @@ python -u reconstruct.py --config config/tests/cohort_master_config.py --force_r
 echo "Reconstruction finished for patient ${dir_basename}"
 
 python -u reorient.py $patient
-echo "Reorientation finished for patient ${dir_basename}, press any key to continue"
+echo "Reorientation finished for patient ${dir_basename}"
 
 python -u resize.py $patient
-echo "Resizing finished for patient ${dir_basename}, press any key to continue"
+echo "Resizing finished for patient ${dir_basename}"
 
 python register_single.py $patient vent 
 python register_single.py $patient reg  
@@ -48,8 +52,6 @@ python -u stats.py --config config/tests/cohort_master_config.py --patient_path 
 echo "Finished computing stats for patient ${dir_basename}."
 echo "Pipeline completed for patient ${dir_basename}"
 
-echo "Cleaning up intermediate files for patient ${dir_basename}"
-bash clean_single.sh $patient
+bash clean_single_end.sh $patient
 
-echo ${dir_basename} >> txt/pipeline_completed.txt
-echo "PIPELINE COMPLETED: The pipeline has successfully completed for patient ${dir_basename} and the patient has been added to txt/pipeline_completed.txt"
+

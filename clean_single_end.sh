@@ -38,11 +38,10 @@ rm -rf $dir/ct_corepeel_mask_*
 rm -rf $dir/dict_dis.pkl # This contains information needed in computing stats
 
 # Optionally, remove the previous registration for mask and mask_vent
-rm -rf $dir/*_vent.pkl 
-rm -rf $dir/*_reg.pkl 
+# rm -rf $dir/*_vent.pkl 
+# rm -rf $dir/*_reg.pkl 
 
 # WARNING: Make sure to remove this line once pipeline is finalized
-# rm -rf $dir/*_stats.csv # Remove stats file if it exists 
 
 # Remove 'Core' and 'Peel' directories if they exist
 rm -rf $dir/Core
