@@ -11,13 +11,12 @@ hb_correction_data=csvs/cohort_hb_corrections.csv
 # Define log file
 mkdir -p runs
 date=$(date +"%Y_%m_%d_%H_%M_%S")
-log_file="runs/${date}_batch.txt"
 
 echo "Received cohort directory: $cohort"
 echo "Writing output to log file: $log_file"
 
 # Define batch size for parallel processing
-N=5
+N=2
 job_count=0
 # Deploy jobs
 for patient in "$cohort"/*; do
@@ -32,8 +31,10 @@ for patient in "$cohort"/*; do
         continue
     else
         # Deploy background job
+        echo "Deploying job for $patient_id (job count: $job_count)"
+        patient_log="runs/${patient_id}_${date}.log"
         (
-            bash pipeline_single.sh "$patient" > "$log_file" 2>&1
+            bash pipeline_single.sh "$patient" > "$patient_log" 2>&1
             echo ${patient_id} >> txt/pipeline_completed.txt
             echo "PIPELINE COMPLETED: The pipeline has successfully completed for patient ${patient}. ${patient_id} has been recorded in txt/pipeline_completed.txt"
             mkdir -p results
