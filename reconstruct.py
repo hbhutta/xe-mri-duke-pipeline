@@ -128,9 +128,12 @@ def main(argv):
     config = _CONFIG.value
 
     # Set data dir from flag argument
-
     config.data_dir = FLAGS.patient_path
+    
+    # RBC:M ratio and hemoglobin correction value must be set manually
     config.rbc_m_ratio = FLAGS.rbc_m_ratio
+    config.hb = FLAGS.hb
+
     config.manual_seg_filepath = f"{config.data_dir}/mask_reg_edited.nii"
 
     print(f"reconstruct.py got data_dir: {config.data_dir}")
