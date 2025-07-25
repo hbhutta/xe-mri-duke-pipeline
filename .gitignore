@@ -156,15 +156,19 @@ z_connection_lost.txt
 *.dll
 
 # Don't upload contents in option folder
-option/*.json
+# option/*.json
+# config/*
+# !config/base_config.py
+# !config/demo_config_basic.py
+# !config/demo_config_advanced.py
+# !config/config_utils.py
+# !config/tests/
+# config/tests/*
+# !config/tests/*.py
+
+# Ignore everything in config except for master config file
 config/*
-!config/base_config.py
-!config/demo_config_basic.py
-!config/demo_config_advanced.py
-!config/config_utils.py
-!config/tests/
-config/tests/*
-!config/tests/*.py
+!config/master_config.py
 
 # Keep the assets folder
 assets/demo/*
@@ -215,3 +219,7 @@ assets/
 
 
 *.png
+
+# Ignore all runs and debugging txt files
+runs/*
+txt/*
