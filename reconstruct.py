@@ -37,6 +37,12 @@ flags.DEFINE_float(
     required=True,
 )
 
+flags.DEFINE_float(
+    name="hb",
+    default=None,
+    help="The hemoglobin correction value",
+    required=True,
+)
 
 def gx_mapping_reconstruction(config: base_config.Config):
     """Run the gas exchange mapping pipeline with reconstruction.
@@ -138,6 +144,7 @@ def main(argv):
 
     print(f"reconstruct.py got data_dir: {config.data_dir}")
     print(f"reconstruct.py got rbc_m_ratio: {config.rbc_m_ratio}")
+    print(f"reconstruct.py got hb correction value: {config.hb}")
     print(f"reconstruct.py got manual_seg_filepath: {config.manual_seg_filepath}")
 
     if FLAGS.force_recon or config.processes.gx_mapping_recon:
