@@ -2,13 +2,13 @@
 
 # Libraries
 from absl import app, flags
-from ml_collections import config_flags
+# from ml_collections import config_flags
 import pandas as pd
 import os
 
 FLAGS = flags.FLAGS
 
-_CONFIG = config_flags.DEFINE_config_file("", None, "config file.")
+# _CONFIG = config_flags.DEFINE_config_file("", None, "config file.")
 
 flags.DEFINE_string(
     name="patient_path",
@@ -21,24 +21,23 @@ flags.DEFINE_boolean(
     name="sublobe", default=False, help="Include sub-lobe names in renamed CSV file"
 )
 
-
 def main(argv):
     """Run the gas exchange imaging pipeline.
 
     Either run the reconstruction or read in the .mat file.
     """
-    config = _CONFIG.value
-    config.data_dir = FLAGS.patient_path
-    config.subject_id = os.path.basename(config.data_dir)
-    if not os.path.isfile(
-        f"{config.data_dir}/{os.path.basename(config.data_dir)}_stats.csv"
-    ):
-        raise FileNotFoundError(
-            f"Stats file not found for patient: {config.subject_id}"
-        )
+    # config = _CONFIG.value
+    # config.data_dir = FLAGS.patient_path
+    subject_id = os.path.basename(FLAGS.patient_path)
+    stats_file_path = f"{FLAGS.patient_path}/{subject_id}_stats.csv"
+
+    if not os.path.isfile(stats_file_path):
+        raise FileNotFoundError(f"Stats file not found for patient: {subject_id}")
+    else:
+        print(f"Stats file found for patient: {subject_id} at {stats_file_path}")
     # Set the region names once all the stats have been computed
-    df = pd.read_csv(f"{config.data_dir}/stats.csv")
-    if "rbc_m_ratio" not in df.columns:
+    df = pd.read_csv(stats_file_path)
+    if "rbc_m_ratio" in df.columns:
         region_names = [
             "left_upper_lobe",
             "left_lower_lobe",
@@ -51,6 +50,7 @@ def main(argv):
         ]
 
         if FLAGS.sublobe:
+            print("Including sub-lobe names in the renamed CSV file.")
             region_names += [
                 "LB1_2",  # Left upper lobe: LB1/2 and LB3
                 "LB3",
@@ -73,7 +73,7 @@ def main(argv):
             ]
         df["rbc_m_ratio"] = region_names
         df.rename(columns={"rbc_m_ratio": "region"}, inplace=True)
-        df.to_csv(f"{config.data_dir}/stats.csv", index=False)
+        df.to_csv(stats_file_path, index=False)
 
 if __name__ == "__main__":
     app.run(main)
