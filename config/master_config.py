@@ -10,6 +10,7 @@ from config import config_utils
 # parent directory
 sys.path.append("..")
 
+
 class Config(config_dict.ConfigDict):
     """Base config file.
 
@@ -30,31 +31,24 @@ class Config(config_dict.ConfigDict):
     """
 
     def __init__(self):
+
         """Initialize config parameters."""
         super().__init__()
-        self.data_dir = "" # "cohort/PIm0015/"
+        self.data_dir = ""
         # "/home/smostafavi/XeGas/xenon-gas-exchange-consortium-main/data/scanfolder/mask_reg_edited.nii"
-        # change 8 times for each mask type
-        
-        # manual_seg_filepath is ignored if we don't have
-        self.manual_seg_filepath = "default" # "cohort/PIm0015/mask_reg_edited.nii"
+        self.manual_seg_filepath = "" # Determined from patient_path flag (i.e. config.manual_seg_filepath = f"{config.data_dir}/mask_reg_edited.nii")
         self.manual_reg_filepath = ""
         self.processes = Process()
         self.recon = Recon()
         self.reference_data_key = constants.ReferenceDataKey.REFERENCE_218_PPM_01.value
         self.reference_data = ReferenceData(self.reference_data_key)
-        
-        # Use manual for all masks (lobes, core/peel, mask_reg_edited)
-        self.segmentation_key = constants.SegmentationKey.MANUAL_VENT.value
-        # for manual: constants.SegmentationKey.MANUAL_VENT.value (second run)
-        # for automatic: constants.SegmentationKey.CNN_VENT.value (first run)
+        self.segmentation_key = constants.SegmentationKey.MANUAL_VENT.value # Manual segmentation path (mask_reg_edited.nii)
         self.registration_key = constants.RegistrationKey.SKIP.value
         self.bias_key = constants.BiasfieldKey.N4ITK.value
-        # constants.HbCorrectionKey.NONE.value
-        self.hb_correction_key = constants.HbCorrectionKey.NONE.value
-        self.hb = 0.0
-        self.subject_id = "" # "PIm0015" # "PIm0075"  # "PIm0377"
-        self.rbc_m_ratio = 0.0 # 0.534 # 0.403
+        self.hb_correction_key = constants.HbCorrectionKey.RBC_AND_MEMBRANE.value
+        self.subject_id = "" # Determined from patient_path flag
+        self.hb = 0.0 # Manual hb_correction value will be determined based on patient path
+        self.rbc_m_ratio = 0.0 # Manual rbc_m_ratio value will be determined based on patient path
 
 
 class Process(object):
