@@ -119,13 +119,7 @@ def gx_mapping_reconstruction(config: base_config.Config):
         ) as f:  # open a text file
             pickle.dump(subject.dict_dis, f)  # serialize the list
 
-    if not are_files_reconstructed:
-        logging.info("Done. No reconstruction occurred.")
-    else:
-        logging.info("Done. Reconstructed files.")
-
-
-def main(argv):
+def main(argv): # argv removed because not accessed
     print("reconstruct.py: in main()")
     """Run the gas exchange imaging pipeline.
 
@@ -135,6 +129,8 @@ def main(argv):
 
     # Set data dir from flag argument
     config.data_dir = FLAGS.patient_path
+    
+    # input("reconstruct.py: Patient path set to: " + config.data_dir + " Confirm to continue...")
     
     # RBC:M ratio and hemoglobin correction value must be set manually
     config.rbc_m_ratio = FLAGS.rbc_m_ratio
@@ -155,7 +151,6 @@ def main(argv):
         gx_mapping_reconstruction(config=config)
     else:
         pass
-
 
 if __name__ == "__main__":
     app.run(main)

@@ -1,48 +1,23 @@
 import ants
 import pickle
 import os
-from time import time
-from sys import argv
 
-start_time = time()
+from absl import app, flags
+from ml_collections import config_flags
 
-patient_path = argv[1]
+FLAGS = flags.FLAGS
+_CONFIG = config_flags.DEFINE_config_file("config", None, "config file.")
 
-imgs = [
-    #    [os.path.join(patient, "mask_reg_edited_mutated_affine_resized.nii") for patient in patients],
-    os.path.join(patient_path, "image_gas_highreso_mutated_affine_resized.nii"),
-    os.path.join(patient_path, "image_gas_binned_mutated_affine_resized.nii"),
-    os.path.join(patient_path, "image_gas_cor_mutated_affine_resized.nii"),
-    os.path.join(patient_path, "image_rbc2gas_binned_mutated_affine_resized.nii"),
-    os.path.join(patient_path, "image_rbc2gas_mutated_affine_resized.nii"),
-    #    [os.path.join(patient, "mask_vent_mutated_affine_resized.nii") for patient in patients],
-    os.path.join(patient_path, "image_membrane_mutated_affine_resized.nii"),
-    os.path.join(patient_path, "image_membrane2gas_binned_mutated_affine_resized.nii"),
-    os.path.join(patient_path, "image_membrane2gas_mutated_affine_resized.nii"),
-    os.path.join(patient_path, "image_gas_binned_mutated_affine_resized.nii"),
-]
-
-print(imgs)
-# assert 0 == 1
-# Haad: We shouldn't have a default argument for the interpolator as we have different types of images above; some are binned (discrete) and some are "continuous"  / not binned.
-# Haad: This function is not being used, but I will keep it here for reference.
-# def apply_fwdtranforms(ANTS_CT, ANTS_Vent, transformlist):
-#     trans = ants.apply_transforms(
-#         fixed=ANTS_CT,
-#         moving=ANTS_Vent,
-#         transformlist=transformlist,
-#         interpolator="multiLabel",
-#         imagetype=0,
-#         whichtoinvert=None,
-#         compose=None,
-#         defaultvalue=0,
-#         verbose=True,
-#     )
-#     return trans
+flags.DEFINE_string(
+    name="patient_path",
+    default=None,  # assuming that this is where .dat files are stored by default
+    help="The folder where the .dat files are stored",
+    required=True,
+)
 
 def warp_image(
     fixed, moving, transform_list, interpolator
-):  # UNDO, make multiLabel the default
+):  
     """
     Use transforms from registration process to warp an image to target.  For example, if you register the ventilation mask to the CT mask,
     you can use the transforms to warp the ventilation intensity image to the CT space.
@@ -92,30 +67,50 @@ def warp_image(
     assert trans is not None
     ants.image_write(image=trans, filename=moving[:-4] + "_warped.nii")
 
+def warp_images(patient_path: str) -> None:
+    with open(os.path.join(patient_path, f"{os.path.basename(patient_path)}_reg.pkl"), "rb") as file:
+        mytx = pickle.load(file=file)
 
-# with open(f"{PATIENT}/{os.path.basename(patient_path)}_reg.pkl", "rb") as file:
-#     mytx = pickle.load(file)
+    FIXED_IMG = os.path.join(patient_path, "CT_mask_neg_affine.nii")
+    
+    processed_image_names = [
+        "image_gas_highreso_mutated_affine_resized.nii",
+        "image_gas_binned_mutated_affine_resized.nii",
+        "image_gas_cor_mutated_affine_resized.nii",
+        "image_rbc2gas_binned_mutated_affine_resized.nii",
+        "image_rbc2gas_mutated_affine_resized.nii",
+        "image_membrane_mutated_affine_resized.nii",
+        "image_membrane2gas_binned_mutated_affine_resized.nii",
+        "image_membrane2gas_mutated_affine_resized.nii",
+        "image_gas_binned_mutated_affine_resized.nii",
+    ]
+    
+    processed_image_paths = [os.path.join(patient_path, name) for name in processed_image_names]
+    
+    for image_path in processed_image_paths:
+        if not os.path.isfile(image_path[:-4] + "_warped.nii"):
 
-with open(os.path.join(patient_path, f"{os.path.basename(patient_path)}_reg.pkl"), "rb") as file:
-    mytx = pickle.load(file=file)
+            # Haad: Here we will change the interpolator based on whether the image is binned or not, with the hope that this will resolve the image_cor NaN's in image error
+            ################################################# 
+            interpolator = "linear"
+            if "binned" in image_path:
+                interpolator = "multiLabel"
+            ################################################# 
 
-FIXED_IMG = os.path.join(patient_path, "CT_mask_neg_affine.nii")
-for img in imgs:
-    if not os.path.isfile(img[:-4] + "_warped.nii"):
-        
-        # Haad: Here we will change the interpolator based on whether the image is binned or not, with the hope that this will resolve the image_cor NaN's in image error
-        
-        ################################################# 
-        interpolator = "linear"
-        if "binned" in img:
-            interpolator = "multiLabel"
-        ################################################# 
+            warp_image(
+                fixed=FIXED_IMG,
+                moving=image_path,
+                transform_list=mytx["fwdtransforms"],
+                interpolator=interpolator
+            )
+        else:
+            print(f"warp_vent.py, warp_images(): File {image_path} already warped") 
 
-        warp_image(
-            fixed=FIXED_IMG,
-            moving=img,
-            transform_list=mytx["fwdtransforms"],
-            interpolator=interpolator
-        )
-    else:
-        print(f"File {img} already warped")
+def main(argv):
+    config = _CONFIG.value
+    config.data_dir = FLAGS.patient_path
+    patient_path = config.data_dir
+    warp_images(patient_path)
+   
+if __name__ == "__main__": 
+    app.run(main)

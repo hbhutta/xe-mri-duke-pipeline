@@ -13,7 +13,7 @@ from config import base_config
 from subject_classmap import Subject
 
 # Utils
-from utils.img_utils import split_mask, homogenize_mask
+from utils.img_utils import split_mask
 from utils.os_utils import basename
 
 
@@ -61,10 +61,11 @@ def compute_patient_stats(config: base_config.Config, masks: list) -> None:
 
     # Append homogenized CT whole lung mask to split_paths separately
     # so it doesn't get split into 20 and 30
-    homogenize_mask(mask_path=os.path.join(config.data_dir, "CT_mask_neg_affine.nii"))
-    split_paths.append(
-        os.path.join(config.data_dir, "CT_mask_neg_affine_homogenized_PI_1.nii")
-    )
+    # homogenize_mask(mask_path=os.path.join(config.data_dir, "CT_mask_neg_affine.nii"))
+    # split_paths.append(
+    #     os.path.join(config.data_dir, "CT_mask_neg_affine_homogenized_PI_1.nii")
+    # )
+    # If we do this we would have two rows of data in the CSV file for the whole lung mask
 
     # Enumerate the images that will be used in computing the bin percentages
     image_names = [
@@ -78,6 +79,7 @@ def compute_patient_stats(config: base_config.Config, masks: list) -> None:
         "image_membrane2gas",
         "image_gas_binned",
     ]
+    print("DATA_DIR", subject.config.data_dir)
     image_paths = [
         os.path.join(
             subject.config.data_dir, f"{image}_mutated_affine_resized_warped.nii"

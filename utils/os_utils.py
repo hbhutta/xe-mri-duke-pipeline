@@ -203,3 +203,9 @@ def get_subdirs(dir_: str):
         # print(aff2axcodes_RAS(nib_img.affine))
     # else:
         # print(f"File {path} already exists.")
+
+def basename(path: str) -> str:
+    """
+    Given a file path, return the base name without the file extension.
+    """
+    return os.path.splitext(os.path.basename(path))[0]

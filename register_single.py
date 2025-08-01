@@ -5,38 +5,56 @@ Performs registration for a single patient. Run this script after resizing.
 import os
 import ants
 import pickle
-from multiprocessing import Pool
+# from multiprocessing import Pool
 
-# from utils.os_utils import get_subdirs
-from sys import argv
-from datetime import datetime
+# from datetime import datetime
 
-patient_paths = [
-    argv[1]
-]  # ['cohort/PIm0015', 'cohort/PIm0018', 'cohort/PIm0019', 'cohort/PIm0020', 'cohort/PIm0023', 'cohort/PIm0025', 'cohort/PIm0028', 'cohort/PIm0029', 'cohort/PIm0031', 'cohort/PIm0032']
-vent_or_reg = argv[2]
+from absl import app, flags
+from ml_collections import config_flags
+
+# from config import base_config
+# from subject_classmap import Subject
+
+FLAGS = flags.FLAGS
+
+_CONFIG = config_flags.DEFINE_config_file("config", None, "config file.")
+
+flags.DEFINE_enum(
+    name="vent_or_reg",
+    default="reg",
+    enum_values=["vent", "reg"],
+    help="Whether to register mask_vent or mask_reg_edited to the CT mask. mask_vent has ventilation defects removed while mask_reg_edited keeps ventilation defects.",
+)
+
+flags.DEFINE_string(
+    name="patient_path",
+    default=None,  # assuming that this is where .dat files are stored by default
+    help="The folder where the .dat files are stored",
+    required=True,
+)
+
 
 # We may have to separately register both mask_reg_edited and mask_vent (since they won't match each other)
 # If we register M to C and X is of the same type as M, only then can we apply ft on X
-ct_mask_file_paths = [
-    os.path.join(patient, "CT_mask_neg_affine.nii") for patient in patient_paths
-]
-mask_reg_edited_file_paths = [
-    os.path.join(patient, "mask_reg_edited_mutated_affine_resized.nii")
-    for patient in patient_paths
-]
-mask_vent_file_paths = [
-    os.path.join(patient, "mask_vent_mutated_affine_resized.nii")
-    for patient in patient_paths
-]
+# ct_mask_file_paths = [
+#     os.path.join(patient, "CT_mask_neg_affine.nii") for patient in patient_paths
+# ]
+# mask_reg_edited_file_paths = [
+#     os.path.join(patient, "mask_reg_edited_mutated_affine_resized.nii")
+#     for patient in patient_paths
+# ]
+# mask_vent_file_paths = [
+#     os.path.join(patient, "mask_vent_mutated_affine_resized.nii")
+#     for patient in patient_paths
+# ]
 
-assert len(ct_mask_file_paths) == len(patient_paths)
-assert len(mask_reg_edited_file_paths) == len(patient_paths)
+# assert len(ct_mask_file_paths) == len(patient_paths)
+# assert len(mask_reg_edited_file_paths) == len(patient_paths)
 
-print(patient_paths)
-print(ct_mask_file_paths)
-print(mask_reg_edited_file_paths)
-print(mask_vent_file_paths)
+# print(patient_paths)
+# print(ct_mask_file_paths)
+# print(mask_reg_edited_file_paths)
+# print(mask_vent_file_paths)
 # assert 0 == 1
 
 
@@ -112,23 +130,44 @@ def register(ct_filename: str, target_filename: str, save_dir: str) -> None:
 #        register(ct_filename=ct_mask, mri_filename=mri, save_dir=subdir)
 
 
-def main():
-    if vent_or_reg == "reg":
-        with Pool() as pool:
-            pool.starmap(
-                register,
-                zip(ct_mask_file_paths, mask_reg_edited_file_paths, patient_paths),
-            )
-    elif argv[2] == "vent":
-        with Pool() as pool:
-            pool.starmap(
-                register, zip(ct_mask_file_paths, mask_vent_file_paths, patient_paths)
-            )
+def main(argv):
+    config = _CONFIG.value
+    config.data_dir = FLAGS.patient_path
+    patient_path = config.data_dir
+    
+    print("register_single.py: Patient_path:", patient_path)
+
+    ct_mask_path = os.path.join(patient_path, "CT_mask_neg_affine.nii")
+    mask_reg_edited_file_path = os.path.join(
+        patient_path, "mask_reg_edited_mutated_affine_resized.nii"
+    )
+    mask_vent_file_path = os.path.join(
+        patient_path, "mask_vent_mutated_affine_resized.nii"
+    )
+
+    if FLAGS.vent_or_reg == "reg":
+        register(
+            ct_filename=ct_mask_path,
+            target_filename=mask_reg_edited_file_path,
+            save_dir=patient_path,
+        )
+        # with Pool() as pool:
+        #     pool.starmap(
+        #         register,
+        #         zip(ct_mask_path, mask_reg_edited_file_path, patient_path),
+        #     )
+    else:
+        register(
+            ct_filename=ct_mask_path,
+            target_filename=mask_vent_file_path,
+            save_dir=patient_path,
+        )
+
+        # with Pool() as pool:
+        #     pool.starmap(
+        #         register, zip(ct_mask_path, mask_vent_file_path, patient_path)
+        #     )
 
 
 if __name__ == "__main__":
-    start = datetime.now()
-    main()
-    end = datetime.now()
-    elapsed = (end - start).seconds / 60
-    print(f"That took {elapsed} minutes")
+    app.run(main)

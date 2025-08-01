@@ -34,5 +34,6 @@ def main(argv):
     ]
     compute_patient_stats(config=config, masks=masks)
 
+
 if __name__ == "__main__":
     app.run(main)

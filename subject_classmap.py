@@ -109,7 +109,7 @@ class Subject(object):
         Read in the dynamic spectroscopy (if it exists) and the dissolved-phase image
         data.
         """
-
+        print(f"data_dir: {self.config.data_dir}")
         self.dict_dis = io_utils.read_dis_twix(
             io_utils.get_dis_twix_files(str(self.config.data_dir))
         )
@@ -493,7 +493,7 @@ class Subject(object):
                 ):
                     logging.info("Applying hemoglobin correction to RBC signal only")
                     self.membrane_hb_correction_factor = 1.0
-                else:
+                else: # RBC_AND_MEMBRANE
                     logging.info(
                         "Applying hemoglobin correction to RBC and membrane signal"
                     )
@@ -502,6 +502,7 @@ class Subject(object):
                 self.rbc_m_ratio *= (
                     self.rbc_hb_correction_factor / self.membrane_hb_correction_factor
                 )
+                # Haad: Float data of RBC and membrane image will be scaled by correction factors
                 self.image_rbc *= self.rbc_hb_correction_factor
                 self.image_membrane *= self.membrane_hb_correction_factor
             else:
@@ -555,13 +556,13 @@ class Subject(object):
         """Bin dissolved images to colormap bins."""
         self.image_rbc2gas_binned = binning.linear_bin(
             image=self.image_rbc2gas,
-            mask=self.mask_vent,
+            mask=self.mask_vent, # This should be with ventilation defects removed
             thresholds=self.config.reference_data.threshold_rbc,
         )
         logging.info("Processed image_rbc2gas_binned")
         self.image_membrane2gas_binned = binning.linear_bin(
             image=self.image_membrane2gas,
-            mask=self.mask_vent,
+            mask=self.mask_vent, # This should be with ventilation defects removed
             thresholds=self.config.reference_data.threshold_membrane,
         )
         logging.info("Processed image_membrane2gas_binned")
@@ -936,11 +937,11 @@ class Subject(object):
 
     def save_files(self):
         """Save select images to nifti files and instance variable to mat."""
-        proton_reg = img_utils.normalize(
-            np.abs(self.image_proton),
-            self.mask,
-            method=constants.NormalizationMethods.PERCENTILE,
-        )
+        # proton_reg = img_utils.normalize(
+        #     np.abs(self.image_proton),
+        #     self.mask,
+        #     method=constants.NormalizationMethods.PERCENTILE,
+        # )
         io_utils.export_nii(
             self.image_rbc2gas_binned,
             f"{self.config.data_dir}/image_rbc2gas_binned.nii",

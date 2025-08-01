@@ -13,9 +13,6 @@ from utils import constants
 
 from utils.img_utils import split_mask
 
-from time import sleep
-
-
 FLAGS = flags.FLAGS
 
 _CONFIG = config_flags.DEFINE_config_file("config", None, "config file.")

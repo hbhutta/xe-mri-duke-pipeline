@@ -215,8 +215,7 @@ def read_dyn_twix(path: str) -> Dict[str, Any]:
     sample_time = twix_utils.get_sample_time(twix_obj=twix_obj)
     fids_dis = twix_utils.get_dyn_fids(twix_obj)
     xe_center_frequency = twix_utils.get_center_freq(twix_obj=twix_obj)
-    xe_dissolved_offset_frequency = twix_utils.get_excitation_freq(
-        twix_obj=twix_obj)
+    xe_dissolved_offset_frequency = twix_utils.get_excitation_freq(twix_obj=twix_obj)
     scan_date = twix_utils.get_scan_date(twix_obj=twix_obj)
     tr = twix_utils.get_TR(twix_obj=twix_obj)
 
@@ -366,8 +365,7 @@ def read_dyn_mrd(path: str) -> Dict[str, Any]:
     sample_time = mrd_utils.get_sample_time(dataset=dataset)
     fids_dis = mrd_utils.get_dyn_fids(dataset=dataset)
     xe_center_frequency = mrd_utils.get_center_freq(header=header)
-    xe_dissolved_offset_frequency = mrd_utils.get_excitation_freq(
-        header=header)
+    xe_dissolved_offset_frequency = mrd_utils.get_excitation_freq(header=header)
     scan_date = mrd_utils.get_scan_date(header=header)
     tr = mrd_utils.get_TR(header=header)
 
@@ -481,14 +479,14 @@ def export_nii(image: np.ndarray, path: str, fov: Optional[float] = None):
         path: str file path of nifti file
         fov: float field of view in cm
     """
-   
+
     nii_imge = None
-    if image.dtype == 'int64':
-        nii_imge = nib.Nifti1Image(image, np.eye(4), dtype='uint8')
+    if image.dtype == "int64":
+        nii_imge = nib.Nifti1Image(image, np.eye(4), dtype="uint8")
     else:
         nii_imge = nib.Nifti1Image(image, np.eye(4))
 
-    #nii_imge = nib.Nifti1Image(image, np.eye(4))
+    # nii_imge = nib.Nifti1Image(image, np.eye(4))
     if fov:
         nii_imge.header["pixdim"][1:4] = [
             fov / np.shape(image)[0] / 10,
@@ -590,6 +588,7 @@ def export_config_to_json(config: config_dict, path: str) -> None:
     with open(path, "w") as f:
         f.write(config.to_json_best_effort(indent=4))
 
+
 def move_or_copy_files(source_paths: list, destination_path: str, move: bool) -> None:
     """Move or copy files to a new directory.
 
@@ -611,10 +610,13 @@ def move_or_copy_files(source_paths: list, destination_path: str, move: bool) ->
                 shutil.move(path, os.path.join(destination_path, fname))
             else:
                 shutil.copy(path, os.path.join(destination_path, fname))
-    logging.info("Files {files} {moved_or_copied} to destination: {destination}".format(
-        files=source_paths, 
-        moved_or_copied="moved" if move else "copied", 
-        destination=destination_path))
+    logging.info(
+        "Files {files} {moved_or_copied} to destination: {destination}".format(
+            files=source_paths,
+            moved_or_copied="moved" if move else "copied",
+            destination=destination_path,
+        )
+    )
 
 
 def zip_files(base_name: str, dir_name: str) -> None:

@@ -7,17 +7,18 @@ import dask.array as da
 from dask.diagnostics import ProgressBar
 
 sys.path.append("..")
-from typing import Any, List, Optional, Tuple
+from typing import Optional, Tuple
 
 import matplotlib
+
 matplotlib.use("Agg")
 import numpy as np
 import skimage
 from scipy import ndimage
 
 from utils import constants, io_utils
-
-import nibabel as nib # Added: January 13, 2025 by Haad
+from utils.os_utils import basename
+import nibabel as nib  # Added: January 13, 2025 by Haad
 from nibabel.nifti1 import Nifti1Image
 
 
@@ -26,7 +27,7 @@ def remove_small_objects(mask: np.ndarray, scale: float = 0.1):
 
     Args:
         mask (np.ndarray): boolean mask
-        scale (float, optional): scalaing factor to determin minimum size.
+        scale (float, optional): scalaing factor to determine minimum size.
             Defaults to 0.015.
 
     Returns:
@@ -164,7 +165,7 @@ def smooth_image(image: np.ndarray, kernel: int = 11) -> np.ndarray:
 
 
 def interp(img: np.ndarray, factor: int = 1):
-    print(f"HAAD: interpolating image / changing size !!!")
+    print("HAAD: interpolating image / changing size !!!")
     """Interpolate the image to be of size factor times the original size.
 
     Args:
@@ -196,25 +197,24 @@ def normalize(
     """
 
     mask = mask.astype(bool)
-    if (mask.shape != image.shape):
-        raise ValueError(f"Image and mask must have the same shape")
+    if mask.shape != image.shape:
+        raise ValueError("Image and mask must have the same shape")
 
-    dask_image = da.from_array(image, chunks='auto')
-    dask_mask = da.from_array(mask, chunks='auto')
+    dask_image = da.from_array(image, chunks="auto")
+    dask_mask = da.from_array(mask, chunks="auto")
 
     if method == constants.NormalizationMethods.MAX:
         return image * 1.0 / np.max(image)
     elif method == constants.NormalizationMethods.PERCENTILE:
         return image * 1.0 / np.percentile(image, percentile)
     elif method == constants.NormalizationMethods.PERCENTILE_MASKED:
-        #image_thre = np.percentile(np.multiply(image,mask), percentile)
+        # image_thre = np.percentile(np.multiply(image,mask), percentile)
         image_thre = da.percentile(dask_image[dask_mask], percentile)
         image_n = da.divide(da.multiply(dask_image, dask_mask), image_thre)
-        #image_n[image_n > 1] = 1
+        # image_n[image_n > 1] = 1
         image_n = da.clip(image_n, 0, 1)
 
         return image_n.compute()
-
 
     elif method == constants.NormalizationMethods.MEAN:
         image[np.isnan(image)] = 0
@@ -357,6 +357,7 @@ def approximate_image_with_bspline(
     # read in the output
     return io_utils.import_nii(pathOutput)
 
+
 # Haad: Custom function to split mask images into separate files based on unique pixel intensity values.
 def split_mask(mask_image_file_path: str) -> list:
     print(f"split_mask received file path: {mask_image_file_path}")
@@ -367,13 +368,13 @@ def split_mask(mask_image_file_path: str) -> list:
 
     unique_values = da.unique(dask_mask).compute()
     vals = [val for val in unique_values if val != 0]
-    
+
     splits = []
     for val in vals:
         splits.append(da.where(dask_mask == val, dask_mask, 0))
 
     split_filepaths = []
-    print("Making Nifti1Image objects out of splits data")
+    print("img_utils.py [split_mask()]: Making Nifti1Image objects out of splits data")
     affine = mask_image.affine
     header = mask_image.header
     basename = os.path.basename(mask_image_file_path)
@@ -381,20 +382,43 @@ def split_mask(mask_image_file_path: str) -> list:
 
     for split_data, unique_val in zip(splits, vals):
         file_path = f"{dirname}/{basename[:-4]}_split_PI_{int(unique_val)}.nii"
-        if (not os.path.isfile(file_path)):
+        if not os.path.isfile(file_path):
             print(f"Creating image for file path: {file_path}")
 
             with ProgressBar():
                 split_data_computed = split_data.compute()
 
-            img = Nifti1Image(dataobj=split_data_computed, affine=affine, header=header) 
+            img = Nifti1Image(dataobj=split_data_computed, affine=affine, header=header)
             nib.save(img=img, filename=file_path)
             print(f"Saved img to path {file_path}")
         else:
             print(f"File already exists: {file_path}")
-        split_filepaths.append(file_path) 
+        split_filepaths.append(file_path)
     return split_filepaths
 
 
+def binarize_image(data: np.ndarray) -> np.ndarray:
+    """
+    Given the float data of a NIFTI image, return a boolean array
+    where a pixel intensity p is sent to 1 if |p-1| > 0.5 and 0 otherwise.
+
+    This function assumes that the pixel intensities are between 0 and 1.
+    """
+    process = np.where(np.abs(data - 1) < np.abs(data - 0), 1, 0)
+    return process
 
 
+def homogenize_mask(mask_path: str) -> None:
+    print("homogenize_mask received file path:", mask_path) # Should be full path
+    if not os.path.isfile(mask_path):
+        raise FileNotFoundError(f"File {mask_path} does not exist")
+
+    mask = nib.load(mask_path)
+    mask_data = mask.get_fdata()
+    mask_data = np.where(mask_data > 1, 1, 0)  # Ensure binary mask
+    mask_homogenized = nib.Nifti1Image(mask_data, mask.affine, mask.header)
+    
+    new_mask_path = os.path.join(
+        os.path.dirname(mask_path), f"{basename(mask_path)}_homogenized.nii"
+    )
+    nib.save(mask_homogenized, new_mask_path)
