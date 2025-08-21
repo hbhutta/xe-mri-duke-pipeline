@@ -33,6 +33,7 @@ rm -rf $dir/mask_reg.nii
 rm -rf $dir/CT_mask_*
 rm -rf $dir/CT_lobe_mask_*
 rm -rf $dir/ct_corepeel_mask_*
+rm -rf $dir/CT_sublobe_mask_* # This will keep the original file "CT_sublobe_mask.nii" but delete, for example, all splits (e.g. CT_sublobe_mask_neg_affine_split_PI_1.nii)
 
 # It's a good idea to re-generated dict_dis because it contains information like the field of view which is used in indirectly used in computing stats
 rm -rf $dir/dict_dis.pkl # This contains information needed in computing stats
