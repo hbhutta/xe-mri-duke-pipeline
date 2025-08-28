@@ -696,6 +696,10 @@ class Subject(object):
             #     self.config.reference_data.reference_fit_membrane[1],
             #     self.config.reference_data.reference_fit_rbc[1],
             # ),
+            # constants.StatsIOFields.RDP_BA: round(metrics.rdp_ba(
+            #     self.image_rbc2gas_binned,
+            #     self.mask,
+            # ), 1),
         }
 
         return self.dict_stats
