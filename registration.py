@@ -42,6 +42,26 @@ def register_ants(
 
     pathReg = bin_path + "/antsRegistration"
     pathApply = bin_path + "/antsApplyTransforms"
+    
+    def convert_bool_to_float(array):
+        """
+        Converts a boolean array to a float32 array.
+
+        Parameters:
+            array (numpy.ndarray): Input array, can be of any dtype.
+
+        Returns:
+            numpy.ndarray: Converted array with dtype float32 if the input is boolean;
+                           otherwise, the original array.
+        """
+        if array.dtype == bool:
+            return array.astype(np.float32)
+        return array
+
+    # Converted the inputs with dtype float32 if the inputs are boolean
+    image_static = convert_bool_to_float(image_static)
+    image_moving1 = convert_bool_to_float(image_moving1)
+    image_moving2 = convert_bool_to_float(image_moving2)
 
     # save the inputs into nii files so the execute N4 can read in
     nii_static = nib.Nifti1Image(abs(image_static), np.eye(4))
@@ -107,7 +127,6 @@ def register_ants(
     os.remove(pathOutputmoving1)
 
     return moving1_reg.astype("float64"), moving2_reg.astype("float64")
-
 
 def main(argv):
     """Ants registration command line."""
